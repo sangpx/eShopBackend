@@ -14,7 +14,11 @@ public class SpringBootSecurityJwtApplication {
 	}
 
 	public static void main(String[] args) {
-    SpringApplication.run(SpringBootSecurityJwtApplication.class, args);
+		System.out.println();
+		System.out.println("                                  -=-=-=-=-=-=-=-=-=-=-=-=-=- Application is Starting -=-=-=-=-=-=-=-=-=-=-=-=-=-");
+		SpringApplication.run(SpringBootSecurityJwtApplication.class, args);
+		System.out.println();
+		System.out.println("                                  -=-=-=-=-=-=-=-=-=-=-=-=-=- Application is Working Fine -=-=-=-=-=-=-=-=-=-=-=-=-=-");
 	}
 
 }

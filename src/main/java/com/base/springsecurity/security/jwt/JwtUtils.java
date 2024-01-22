@@ -18,10 +18,10 @@ import io.jsonwebtoken.security.Keys;
 public class JwtUtils {
   private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
-  @Value("${bezkoder.app.jwtSecret}")
+  @Value("${ecommerce.app.jwtSecret}")
   private String jwtSecret;
 
-  @Value("${bezkoder.app.jwtExpirationMs}")
+  @Value("${ecommerce.app.jwtExpirationMs}")
   private int jwtExpirationMs; // Thoi gian het han Token
 
   //Tu tong tin User -> tao JWT

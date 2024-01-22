@@ -2,6 +2,7 @@ package com.base.springsecurity.models.dto.payload.response;
 
 import java.util.List;
 
+
 public class JwtResponse {
   private String token;
   private String type = "Bearer";

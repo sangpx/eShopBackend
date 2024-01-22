@@ -1,11 +1,11 @@
 package com.base.springsecurity.models.dto.payload.response;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class FileUploadResponse {

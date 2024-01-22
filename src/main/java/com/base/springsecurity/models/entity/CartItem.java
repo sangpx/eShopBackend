@@ -1,31 +1,49 @@
 package com.base.springsecurity.models.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
 
 @Entity
-@Table(name = "cart_items")
 @Data
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "cart_items")
 public class CartItem {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long cartItemId;
-    //Quan he nhieu - mot
+    private Long id;
+
+    private Long userId;
+
+    private String size;
+
+    private int quantity;
+
+    private int price;
+
+    private int discountedPrice;
+
     @ManyToOne
-    @JoinColumn(name = "cart_id")
+    @JsonIgnore
+    @JsonBackReference
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @JoinColumn(name = "cart_id" , insertable=false, updatable=false)
     private Cart cart;
 
-    //Quan he nhieu - mot
     @ManyToOne
-    @JoinColumn(name = "product_id")
+    @JsonIgnore
+    @JsonBackReference
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @JoinColumn(name = "product_id" , insertable=false, updatable=false)
     private Product product;
 
-    private Integer quantity;
-    private double discount;
-    private double productPrice;
+
 }

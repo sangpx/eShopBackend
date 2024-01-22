@@ -1,6 +1,5 @@
 package com.base.springsecurity.models.dto.payload.response;
 
-
 import lombok.*;
 
 @Data
@@ -8,7 +7,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MessageResponse {
-  private String message;
-  private boolean status;
+public class PaymentLinkResponse {
+    private String payment_link_url;
+    private String payment_link_id;
 }

@@ -1,22 +1,21 @@
 package com.base.springsecurity.models.entity;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Data
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "users",
     uniqueConstraints = {
       @UniqueConstraint(columnNames = "username"),
@@ -47,63 +46,36 @@ public class User {
         inverseJoinColumns = @JoinColumn(name = "role_id"))
   private Set<Role> roles = new HashSet<>();
 
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  @JsonManagedReference
+  @EqualsAndHashCode.Exclude // không sử dụng trường này trong equals và hashcode
+  @ToString.Exclude // Ko sử dụng trong toString()
+  private Set<Address> addresses = new HashSet<>();
+
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  @JsonManagedReference
+  @EqualsAndHashCode.Exclude // không sử dụng trường này trong equals và hashcode
+  @ToString.Exclude // Ko sử dụng trong toString()
+  private Set<Rating> ratings = new HashSet<>();
+
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  @JsonManagedReference
+  @EqualsAndHashCode.Exclude // không sử dụng trường này trong equals và hashcode
+  @ToString.Exclude // Ko sử dụng trong toString()
+  private Set<Review> reviews = new HashSet<>();
+
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  @JsonManagedReference
+  @EqualsAndHashCode.Exclude
+  @ToString.Exclude
+  private Set<Order> orders = new HashSet<>();
+
   //Xet moi quan he nhieu - nhieu
   @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(  name = "user_addresses",
+  @JoinTable(  name = "user_paymentInfomation",
           joinColumns = @JoinColumn(name = "user_id"),
-          inverseJoinColumns = @JoinColumn(name = "address_id"))
-  private List<Address> addresses = new ArrayList<>();
-
-  @OneToOne(mappedBy = "user", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, orphanRemoval = true)
-  private Cart cart;
+          inverseJoinColumns = @JoinColumn(name = "paymentInfomation_id"))
+  private Set<PaymentInformation> listPaymentInformations = new HashSet<>();
 
 
-  public User() {
-  }
-
-  public User(String username, String email, String password) {
-    this.username = username;
-    this.email = email;
-    this.password = password;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public String getUsername() {
-    return username;
-  }
-
-  public void setUsername(String username) {
-    this.username = username;
-  }
-
-  public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-  public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
-  }
-
-  public Set<Role> getRoles() {
-    return roles;
-  }
-
-  public void setRoles(Set<Role> roles) {
-    this.roles = roles;
-  }
 }
