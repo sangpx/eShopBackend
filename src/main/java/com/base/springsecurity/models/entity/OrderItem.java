@@ -1,30 +1,53 @@
 package com.base.springsecurity.models.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.time.LocalDateTime;
+import java.util.Date;
 
 
 @Entity
 @Data
 @Getter
 @Setter
-@Table(name = "order_items")
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "order_items")
 public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long orderItemId;
+    private Long id;
+
+    private String size;
+
+    private int quantity;
+
+    private Integer price;
+
+    @Column(name = "discounted_price")
+    private Integer discountedPrice;
+
+    private Long userId;
+
+    @Column(name = "delivery_date")
+    private Date deliveryDate;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
-
-    @ManyToOne
-    @JoinColumn(name = "order_id")
+    @JsonIgnore
+    @JsonBackReference
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @JoinColumn(name = "order_id" , insertable=false, updatable=false)
     private Order order;
 
-    private Integer quantity;
-    private double discount;
-    private double orderedProductPrice;
+    @ManyToOne
+    @JsonIgnore
+    @JsonBackReference
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @JoinColumn(name = "product_id" , insertable=false, updatable=false)
+    private Product product;
 }

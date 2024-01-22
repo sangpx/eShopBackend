@@ -1,15 +1,15 @@
 package com.base.springsecurity.services;
 
-import com.base.springsecurity.models.dto.category.CategoryResponse;
-import com.base.springsecurity.models.dto.category.CategotyDTO;
+import com.base.springsecurity.models.dto.catalog.category.CategoryDTO;
 import com.base.springsecurity.models.entity.Category;
 
 import java.util.List;
 
 public interface CategoryService {
-    CategoryResponse getAllCategories(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
-    CategotyDTO insertCategory(Category category);
-    CategotyDTO updateCategory(Long id, Category category);
-    String deleteCategory(Long id);
-
+    List<CategoryDTO> getAllCategories();
+    CategoryDTO getCategoryById(Long id);
+    CategoryDTO insertCategory(CategoryDTO categoryDTO);
+    CategoryDTO updateCategory(CategoryDTO categoryDTO, Long id);
+    void deleteCategory(Long id);
+    CategoryDTO findCategoryByName(String categoryName);
 }

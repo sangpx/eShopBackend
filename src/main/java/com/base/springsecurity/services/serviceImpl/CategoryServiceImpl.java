@@ -1,8 +1,8 @@
 package com.base.springsecurity.services.serviceImpl;
 
 import com.base.springsecurity.exceptions.APIException;
-import com.base.springsecurity.models.dto.category.CategoryResponse;
-import com.base.springsecurity.models.dto.category.CategotyDTO;
+import com.base.springsecurity.exceptions.ResourceNotFoundException;
+import com.base.springsecurity.models.dto.catalog.category.CategoryDTO;
 import com.base.springsecurity.models.entity.Category;
 import com.base.springsecurity.repository.CategoryRepository;
 import com.base.springsecurity.services.CategoryService;
@@ -10,40 +10,72 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.module.ResolutionException;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
-    private CategoryRepository repository;
+    private CategoryRepository categoryRepository;
+
     @Autowired
     private ModelMapper modelMapper;
 
-    //GetPaging
     @Override
-    public CategoryResponse getAllCategories(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
-        return null;
+    public List<CategoryDTO> getAllCategories() {
+        //Map DTO -> Entity
+        List<Category> categoryList = categoryRepository.findAll();
+        //Map Entity -> DTO
+       return categoryList.stream().map(category -> modelMapper.map(category, CategoryDTO.class))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public CategotyDTO insertCategory(Category category) {
-        //tim kiem category da ton tai chua
-        Category savedCategory = repository.findByCategoryName(category.getCategoryName());
-        if(savedCategory != null) {
-            throw new APIException("Category with the name '" + category.getCategoryName() + "' already existed!");
-        }
-        //Neu chua ton tai => Luu category moi
-        savedCategory = repository.save(category);
-        //Enity -> DTO
-        return modelMapper.map(savedCategory, CategotyDTO.class);
+    public CategoryDTO getCategoryById(Long id) {
+        //Tim kiem Category xem da ton tai chua
+        Category category =  categoryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category", "id", id));
+        //Entity -> DTO
+        return modelMapper.map(category, CategoryDTO.class);
     }
 
     @Override
-    public CategotyDTO updateCategory(Long id, Category category) {
-        return null;
+    public CategoryDTO insertCategory(CategoryDTO categoryDTO) {
+        //DTO -> Entity
+        Category category = modelMapper.map(categoryDTO, Category.class);
+        Category savedCategory = categoryRepository.save(category);
+        //Entity -> DTO
+        return modelMapper.map(savedCategory, CategoryDTO.class);
+     }
+
+    @Override
+    public CategoryDTO updateCategory(CategoryDTO categoryDTO, Long id) {
+        //Tim kiem Category xem da ton tai chua
+       Category category =  categoryRepository.findById(id)
+               .orElseThrow(() -> new ResourceNotFoundException("Category", "id", id));
+       //Tien hanh update Category entity
+       category.setName(categoryDTO.getName());
+       category.setLevel(category.getLevel());
+       category.setId(id);
+       Category updatedCategory = categoryRepository.save(category);
+
+       //Entity -> DTO
+       return modelMapper.map(updatedCategory, CategoryDTO.class);
+    }
+
+
+    @Override
+    public void deleteCategory(Long id) {
+        //Tim kiem Category xem da ton tai chua
+        Category category =  categoryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category", "id", id));
+        categoryRepository.delete(category);
     }
 
     @Override
-    public String deleteCategory(Long id) {
+    public CategoryDTO findCategoryByName(String categoryName) {
         return null;
     }
 }

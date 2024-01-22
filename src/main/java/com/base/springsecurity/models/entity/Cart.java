@@ -1,32 +1,47 @@
 package com.base.springsecurity.models.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
 @Getter
 @Setter
-@Table(name = "carts")
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "carts")
 public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long cartId;
+    private Long id;
 
-    //Quan he 1 - 1
-    @OneToOne
-    @JoinColumn(name = "user_id")
+    @Column(name = "total_price")
+    private double totalPrice;
+
+    @Column(name="total_item")
+    private int totalItem;
+
+    @Column(name="total_discounted_price")
+    private int totalDiscountedPrice;
+
+    @Column(name="discounte")
+    private int discounte;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    //Quan he mot - nhieu
-    @OneToMany(mappedBy = "cart", cascade = { CascadeType.PERSIST,
-            CascadeType.MERGE }, orphanRemoval = true)
-    private List<CartItem> cartItems = new ArrayList<>();
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    @EqualsAndHashCode.Exclude // không sử dụng trường này trong equals và hashcode
+    @ToString.Exclude // Ko sử dụng trong toString()
+    @Column(name = "cart_items")
+    private Set<CartItem> cartItems = new HashSet<>();
 
-    private Double totalPrice = 0.0;
 }
