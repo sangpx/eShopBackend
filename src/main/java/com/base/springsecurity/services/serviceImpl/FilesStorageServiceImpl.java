@@ -9,10 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.FileAlreadyExistsException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.util.stream.Stream;
 
 
@@ -33,14 +30,15 @@ public class FilesStorageServiceImpl implements FilesStorageService {
     }
 
     @Override
-    public void save(MultipartFile file) {
+    public boolean save(MultipartFile file) {
         try {
             //resolve tuong ung voi path folder
-            Files.copy(file.getInputStream(), this.root.resolve(file.getOriginalFilename()));
+            Files.copy(file.getInputStream(), root.resolve(file.getOriginalFilename()),
+                    StandardCopyOption.REPLACE_EXISTING);
+            return true;
         } catch (Exception e) {
-            if (e instanceof FileAlreadyExistsException) {
-                throw new RuntimeException(e.getMessage());
-            }
+            System.out.println("Error save file!" + e.getMessage());
+            return false;
         }
     }
 

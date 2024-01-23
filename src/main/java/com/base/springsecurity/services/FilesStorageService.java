@@ -8,7 +8,7 @@ import java.util.stream.Stream;
 
 public interface FilesStorageService {
     public void  init();
-    public void save(MultipartFile file);
+    public boolean save(MultipartFile file);
     public Resource load(String fileName);
     public boolean deleteFile(String fileName);
     public void deleteAll();
