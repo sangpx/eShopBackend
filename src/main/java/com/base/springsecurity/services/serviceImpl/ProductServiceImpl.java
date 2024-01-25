@@ -1,12 +1,13 @@
 package com.base.springsecurity.services.serviceImpl;
 
 import com.base.springsecurity.exceptions.ProductException;
+import com.base.springsecurity.exceptions.ResourceNotFoundException;
 import com.base.springsecurity.models.entity.Category;
 import com.base.springsecurity.models.entity.Product;
-import com.base.springsecurity.repository.CategoryRepository;
 import com.base.springsecurity.repository.ProductRepository;
 import com.base.springsecurity.services.FilesStorageService;
 import com.base.springsecurity.services.ProductService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,11 +27,14 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private FilesStorageService storageService;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     //Insert Product
     @Override
     public boolean insertProduct(MultipartFile file,
          String title, String description, int price, int discountedPrice, int discountPersent,
-         int quantity, Long categoryId, String brand, String color, int numRatings)
+         int quantity, Long categoryId, String brand, String color)
             throws ProductException {
         boolean isInsertSuccess = false;
        try {
@@ -47,7 +51,6 @@ public class ProductServiceImpl implements ProductService {
                 product.setQuantity(quantity);
                 product.setBrand(brand);
                 product.setColor(color);
-                product.setNumRatings(numRatings);
                 Category category = new Category();
                 category.setId(categoryId);
                 product.setCategory(category);
@@ -56,15 +59,79 @@ public class ProductServiceImpl implements ProductService {
                 isInsertSuccess = true;
             }
        } catch (Exception e) {
-           throw new ProductException("Cannot insert product! ");
+           throw new ProductException("Cannot Insert Product! ");
        }
            return isInsertSuccess;
     }
 
     @Override
-    public Page<Product> findProductsWithPaginationAndSorting(int offSet, int pageSize, String filed) {
+    public boolean updateProduct(MultipartFile file, String title, String description,
+         int price, int discountedPrice, int discountPersent, int quantity,
+         Long categoryId, String brand, String color, Long productId) throws ProductException {
+        boolean isUpdateSuccess = false;
+        try {
+            Product productFromDB = productRepository.findById(productId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId));
+            if (productFromDB == null) {
+                throw new ProductException("Product not found with productId: " + productId);
+            }
+            Boolean isSavedFileSuccess = storageService.save(file);
+            if(isSavedFileSuccess) {
+                //setup du lieu
+                Product product = new Product();
+                product.setId(productId);
+                product.setImage(file.getOriginalFilename());
+                product.setTitle(title);
+                product.setDescription(description);
+                product.setPrice(price);
+                product.setDiscountedPrice(discountedPrice);
+                product.setDiscountPersent(discountPersent);
+                product.setQuantity(quantity);
+                product.setBrand(brand);
+                product.setColor(color);
+                Category category = new Category();
+                category.setId(categoryId);
+                product.setCategory(category);
+                //tien hanh save Product
+                productRepository.save(product);
+                isUpdateSuccess = true;
+            }
+        } catch (Exception e) {
+            throw new ProductException("Cannot Update Product! ");
+        }
+        return isUpdateSuccess;
+    }
+
+    @Override
+    public void deleteProduct(Long productId) throws ProductException {
+        Product product = productRepository.findById(productId).orElseThrow(() -> new ProductException("Not found Product!"));
+        productRepository.delete(product);
+    }
+
+    @Override
+    public Product getDetailProduct(Long productId) throws ProductException {
+        Product productFromDB = productRepository.findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId));
+        if (productFromDB == null) {
+            throw new ProductException("Product not found with productId: " + productId);
+        }
+        return productFromDB;
+    }
+
+    @Override
+    public Page<Product> findProductsWithPaginationAndSorting(int offSet, int pageSize, String filed) throws ProductException{
         Page<Product> productPage = productRepository
                 .findAll(PageRequest.of(offSet, pageSize).withSort(Sort.by(filed)));
         return productPage;
+    }
+
+    @Override
+    public Page<Product> findProductsByCategory(String categoryName) throws ProductException {
+        return null;
+    }
+
+    @Override
+    public Page<Product> searchProduct(String query) throws ProductException {
+        return null;
     }
 }

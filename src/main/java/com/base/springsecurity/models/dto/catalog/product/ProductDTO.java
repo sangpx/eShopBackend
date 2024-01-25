@@ -32,9 +32,10 @@ public class ProductDTO {
 
     private String color;
 
-    private int numRatings;
-
     private String image;
 
+    private double rating;
+
     private Date createdAt;
+
 }

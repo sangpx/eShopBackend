@@ -45,9 +45,6 @@ public class Product {
     @Column(name = "color")
     private String color;
 
-    @Column(name = "num_ratings")
-    private int numRatings;
-
     @Column(name = "image")
     private String image;
 
