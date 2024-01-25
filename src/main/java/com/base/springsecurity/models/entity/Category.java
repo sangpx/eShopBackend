@@ -21,7 +21,7 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank
-    @Size(min = 5, message = "Category name must contain atleast 5 characters")
+    @Size(min = 5, message = "Category name must contain at least 5 characters")
     private String name;
 
     private int level;
@@ -35,5 +35,5 @@ public class Category {
     @JsonManagedReference
     @EqualsAndHashCode.Exclude // không sử dụng trường này trong equals và hashcode
     @ToString.Exclude // Ko sử dụng trong toString()
-    private Set<Product> products;
+    private Set<Product> listProducts;
 }

@@ -10,10 +10,11 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class SpringBootSecurityJwtApplication implements CommandLineRunner {
-	//Cau hinh modelMapper trong project
 
 	@Resource
 	private FilesStorageService storageService;
+
+	//Cau hinh modelMapper trong project
 	@Bean
 	public ModelMapper modelMapper() {
 		return new ModelMapper();
@@ -29,7 +30,7 @@ public class SpringBootSecurityJwtApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... arg) throws Exception {
-//    storageService.deleteAll();
+		//storageService.deleteAll();
 		storageService.init();
 	}
 

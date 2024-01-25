@@ -9,12 +9,12 @@ import lombok.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
+@Entity
 @Data
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
 @Table(name = "products")
 public class Product {
     @Id
@@ -45,17 +45,17 @@ public class Product {
     @Column(name = "color")
     private String color;
 
-    @Column(name = "num_ratings")
-    private int numRatings;
+    @Column(name = "image")
+    private String image;
 
     @Column(name = "created_at")
     private Date createdAt;
 
-    @ManyToOne
+    @ManyToOne(optional=false)
+    @JoinColumn(name = "category_id")
     @JsonBackReference
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @JoinColumn(name = "category_id" , insertable=false, updatable=false)
     private Category category;
 
     @OneToMany(mappedBy = "product", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
