@@ -43,5 +43,4 @@ public class Cart {
     @ToString.Exclude // Ko sử dụng trong toString()
     @Column(name = "cart_items")
     private Set<CartItem> cartItems = new HashSet<>();
-
 }

@@ -28,7 +28,7 @@ public class ProductController {
     @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     public PageResult<Page<Product>> getProductPaging(
             @RequestParam int offSet, @RequestParam int pageSize, @RequestParam String filed) throws ProductException{
-        Page<Product> productPages = productService.findProductsWithPaginationAndSorting(offSet, pageSize, filed);
+        Page<Product> productPages = productService.getProductsWithPaginationAndSorting(offSet, pageSize, filed);
         return new PageResult<>(productPages.getSize(), productPages);
     }
 
