@@ -17,13 +17,14 @@ public interface ProductService {
     boolean updateProduct(MultipartFile file, String title, String description,
                           int price, int discountedPrice, int discountPersent,
                           int quantity, Long categoryId, String brand, String color, Long productId) throws ProductException;
-    public void deleteProduct(Long productId) throws ProductException;
-
+    void deleteProduct(Long productId) throws ProductException;
 
     //For Admin and User
     Product getDetailProduct(Long productId) throws ProductException;
-    Page<Product> findProductsWithPaginationAndSorting(int offSet, int pageSize, String filed) throws ProductException;
+    Page<Product> getProductsWithPaginationAndSorting(int offSet, int pageSize, String filed) throws ProductException;
     Page<Product> findProductsByCategory(String categoryName) throws ProductException;
-    Page<Product> searchProduct(String query) throws ProductException;
+    Page<Product> getAllProduct(String category, List<String>colors,
+            List<String> sizes, Integer minPrice, Integer maxPrice, Integer minDiscount,
+            String sort, String stock, int offSet, int pageSize) throws ProductException;
 
 }

@@ -104,7 +104,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteProduct(Long productId) throws ProductException {
-        Product product = productRepository.findById(productId).orElseThrow(() -> new ProductException("Not found Product!"));
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductException("Not found Product!"));
         productRepository.delete(product);
     }
 
@@ -119,7 +120,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Product> findProductsWithPaginationAndSorting(int offSet, int pageSize, String filed) throws ProductException{
+    public Page<Product> getProductsWithPaginationAndSorting(int offSet, int pageSize, String filed) throws ProductException{
         Page<Product> productPage = productRepository
                 .findAll(PageRequest.of(offSet, pageSize).withSort(Sort.by(filed)));
         return productPage;
@@ -131,7 +132,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Product> searchProduct(String query) throws ProductException {
+    public Page<Product> getAllProduct(String category,
+       List<String> colors, List<String> sizes, Integer minPrice, Integer maxPrice,
+       Integer minDiscount, String sort, String stock, int offSet, int pageSize)
+            throws ProductException {
         return null;
     }
+
+
 }
