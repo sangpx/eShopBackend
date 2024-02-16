@@ -37,17 +37,11 @@ public class OrderItem {
 
     @ManyToOne
     @JsonIgnore
-    @JsonBackReference
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
     @JoinColumn(name = "order_id" , insertable=false, updatable=false)
     private Order order;
 
     @ManyToOne
     @JsonIgnore
-    @JsonBackReference
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
     @JoinColumn(name = "product_id" , insertable=false, updatable=false)
     private Product product;
 }
