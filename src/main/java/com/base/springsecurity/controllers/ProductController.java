@@ -5,6 +5,7 @@ import com.base.springsecurity.exceptions.ProductException;
 import com.base.springsecurity.models.dto.payload.response.MessageResponse;
 import com.base.springsecurity.models.dto.payload.response.PageResult;
 import com.base.springsecurity.models.entity.Product;
+import com.base.springsecurity.models.entity.Size;
 import com.base.springsecurity.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
+import java.util.Set;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -42,12 +44,11 @@ public class ProductController {
 
     @PostMapping("/admin/insertProduct")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> insertProduct(@RequestParam MultipartFile file, @RequestParam String title, @RequestParam String description,
+    public ResponseEntity<String> insertProduct(@RequestParam MultipartFile file, @RequestParam String title, @RequestParam String description,
          @RequestParam int price, @RequestParam int discountedPrice, @RequestParam int discountPersent,
-         @RequestParam  int quantity, @RequestParam Long categoryId, @RequestParam String brand, @RequestParam String color
-        ) throws ProductException {
+         @RequestParam  int quantity, @RequestParam Long categoryId, @RequestParam String brand, @RequestParam String color) throws ProductException {
             productService.insertProduct(file, title, description,price, discountedPrice, discountPersent, quantity, categoryId, brand, color);
-            return new ResponseEntity<>("Insert Successfully!", HttpStatus.CREATED);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Product inserted successfully!");
     }
 
     @PutMapping("/admin/updateProduct/{productId}")
@@ -67,4 +68,6 @@ public class ProductController {
         productService.deleteProduct(productId);
         return ResponseEntity.ok("Delete product Successfully!");
     }
+
+    //getAllProduct theo categoryName, size, color, price, discountPrice
 }

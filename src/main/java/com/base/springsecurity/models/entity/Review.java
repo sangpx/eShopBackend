@@ -1,5 +1,6 @@
 package com.base.springsecurity.models.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -25,19 +26,17 @@ public class Review
     @Column(name = "created_at")
     private Date createdAt;
 
-    @ManyToOne
-    @JoinColumn(name="product_id")
-    @JsonIgnore
-    @JsonManagedReference
-    @EqualsAndHashCode.Exclude // không sử dụng trường này trong equals và hashcode
-    @ToString.Exclude // Ko sử dụng trong toString()
-    private Product product;
-
-    @ManyToOne
-    @JoinColumn(name="user_id")
-    @JsonManagedReference
-    @EqualsAndHashCode.Exclude // không sử dụng trường này trong equals và hashcode
-    @ToString.Exclude // Ko sử dụng trong toString()
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private User user;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id", nullable = false)
+    @JsonBackReference
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Product product;
 }

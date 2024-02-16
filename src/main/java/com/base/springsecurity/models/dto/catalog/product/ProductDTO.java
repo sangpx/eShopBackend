@@ -8,6 +8,7 @@ import lombok.*;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -35,6 +36,8 @@ public class ProductDTO {
     private String image;
 
     private double rating;
+
+    private Set<Size> size=new HashSet<>();
 
     private Date createdAt;
 

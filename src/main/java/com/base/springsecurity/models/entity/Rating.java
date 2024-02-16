@@ -38,7 +38,4 @@ public class Rating {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Product product;
-
-
-
 }

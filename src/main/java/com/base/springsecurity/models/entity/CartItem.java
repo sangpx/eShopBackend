@@ -29,21 +29,11 @@ public class CartItem {
 
     private int discountedPrice;
 
-    @ManyToOne
     @JsonIgnore
-    @JsonBackReference
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    @JoinColumn(name = "cart_id" , insertable=false, updatable=false)
+    @ManyToOne
     private Cart cart;
 
-    @ManyToOne
     @JsonIgnore
-    @JsonBackReference
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    @JoinColumn(name = "product_id" , insertable=false, updatable=false)
+    @ManyToOne
     private Product product;
-
-
 }

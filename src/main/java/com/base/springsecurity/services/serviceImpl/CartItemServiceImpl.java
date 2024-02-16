@@ -41,20 +41,24 @@ public class CartItemServiceImpl implements CartItemService {
     @Override
     public CartItem updateCartItem(Long userId, Long id, CartItem cartItem) throws CartItemException, UserException {
         CartItem item = findCartItemById(id);
-        Optional<User> userOtp = userService.findById(userId);
-        if(userOtp.isPresent()) {
-            User user = userOtp.get();
-            if(user.getId().equals(cartItem.getUserId())) {
-                item.setQuantity(cartItem.getQuantity());
-                item.setPrice(item.getQuantity() * item.getProduct().getPrice());
-                item.setDiscountedPrice(item.getQuantity() * item.getProduct().getDiscountedPrice());
-            } else  {
-                throw new CartItemException("Cart item does not belong to the specified user.");
-            }
-        }
-        else  {
+        Optional<User> userOptional = userService.findById(userId);
+
+        if (!userOptional.isPresent()) {
             throw new UserException("User not found with id: " + userId);
         }
+
+        User user = userOptional.get();
+
+        if (!user.getId().equals(item.getUserId())) {
+            throw new CartItemException("You can't update another user's cart item.");
+        }
+
+        // Cập nhật thuộc tính của item với giá trị mới từ cartItem truyền vào
+        item.setQuantity(cartItem.getQuantity());
+        item.setPrice(item.getQuantity() * item.getProduct().getPrice());
+        item.setDiscountedPrice(item.getQuantity() * item.getProduct().getDiscountedPrice());
+
+        // Lưu thay đổi vào cơ sở dữ liệu và trả về đối tượng đã được cập nhật
         return cartItemRepository.save(item);
     }
 

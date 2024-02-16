@@ -11,8 +11,6 @@ import java.util.*;
 
 @Entity
 @Data
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "products")
@@ -51,6 +49,10 @@ public class Product {
     @Column(name = "created_at")
     private Date createdAt;
 
+    @ElementCollection
+    @Column(name = "sizes")
+    private Set<Size> sizes = new HashSet<>();
+
     @ManyToOne(optional=false)
     @JoinColumn(name = "category_id")
     @JsonBackReference
@@ -69,13 +71,6 @@ public class Product {
     @EqualsAndHashCode.Exclude // không sử dụng trường này trong equals và hashcode
     @ToString.Exclude // Ko sử dụng trong toString()
     private Set<Review> reviews = new HashSet<>();
-
-    //Xet moi quan he nhieu - nhieu
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(  name = "product_sizes",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "size_id"))
-    private Set<Size> sizes = new HashSet<>();
 
     @OneToMany(mappedBy = "product", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JsonManagedReference

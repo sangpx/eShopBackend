@@ -14,6 +14,7 @@ import com.base.springsecurity.models.entity.Role;
 import com.base.springsecurity.models.entity.User;
 import com.base.springsecurity.security.jwt.JwtUtils;
 import com.base.springsecurity.security.services.UserDetailsImpl;
+import com.base.springsecurity.services.CartService;
 import com.base.springsecurity.services.RoleService;
 import com.base.springsecurity.services.UserService;
 import jakarta.validation.Valid;
@@ -36,19 +37,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/auth")
 public class AuthController {
   @Autowired
-  AuthenticationManager authenticationManager;
+  private AuthenticationManager authenticationManager;
 
   @Autowired
-  UserService userService;
+  private PasswordEncoder encoder;
 
   @Autowired
-  RoleService roleService;
+  private JwtUtils jwtUtils;
 
   @Autowired
-  PasswordEncoder encoder;
+  private UserService userService;
 
   @Autowired
-  JwtUtils jwtUtils;
+  private RoleService roleService;
+
+  @Autowired
+  private CartService cartService;
 
   @PostMapping("/signin")
   public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -124,6 +128,7 @@ public class AuthController {
     }
     user.setRoles(roles);
     userService.saveOrUpdate(user);
+    cartService.createCart(user);
     return ResponseEntity.ok(new MessageResponse("User registered successfully!", true));
   }
 }

@@ -1,22 +1,15 @@
 package com.base.springsecurity.models.entity;
 
-import com.base.springsecurity.models.entity.domain.ProductSize;
-import jakarta.persistence.*;
+import jakarta.persistence.Embeddable;
 import lombok.*;
+
 @Data
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "sizes")
+@Embeddable
 public class Size {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
-    @Enumerated(EnumType.STRING)
-    private ProductSize name;
+    private String name;
 
     private int quantity;
 }

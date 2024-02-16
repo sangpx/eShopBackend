@@ -4,6 +4,7 @@ import com.base.springsecurity.exceptions.ProductException;
 import com.base.springsecurity.exceptions.ResourceNotFoundException;
 import com.base.springsecurity.models.entity.Category;
 import com.base.springsecurity.models.entity.Product;
+import com.base.springsecurity.models.entity.Size;
 import com.base.springsecurity.repository.ProductRepository;
 import com.base.springsecurity.services.FilesStorageService;
 import com.base.springsecurity.services.ProductService;
@@ -15,7 +16,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 
 @Service
@@ -51,6 +54,7 @@ public class ProductServiceImpl implements ProductService {
                 product.setQuantity(quantity);
                 product.setBrand(brand);
                 product.setColor(color);
+                product.setCreatedAt(new Date());
                 Category category = new Category();
                 category.setId(categoryId);
                 product.setCategory(category);
@@ -88,6 +92,7 @@ public class ProductServiceImpl implements ProductService {
                 product.setDiscountPersent(discountPersent);
                 product.setQuantity(quantity);
                 product.setBrand(brand);
+                product.setCreatedAt(new Date());
                 product.setColor(color);
                 Category category = new Category();
                 category.setId(categoryId);
