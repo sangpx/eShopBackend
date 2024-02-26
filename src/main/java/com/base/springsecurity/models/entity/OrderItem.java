@@ -25,10 +25,10 @@ public class OrderItem {
 
     private int quantity;
 
-    private Integer price;
+    private double price;
 
     @Column(name = "discounted_price")
-    private Integer discountedPrice;
+    private double discountedPrice;
 
     private Long userId;
 

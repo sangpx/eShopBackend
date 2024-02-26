@@ -61,11 +61,10 @@ public class CartServiceImpl implements CartService {
             cartItem.setQuantity(cartDTO.getQuantity());
             cartItem.setUserId(userId);
 
-            int price = cartDTO.getQuantity() * product.getPrice();
+            double price = cartDTO.getQuantity() * product.getPrice();
             cartItem.setPrice(price);
             cartItem.setSize(cartDTO.getSize());
 
-//            CartItem createCartItem = cartItemService.createCartItem(cartItem);
             CartItem createCartItem = cartItemService.createCartItem(cartItem);
 
             cart.getCartItems().add(createCartItem);
@@ -76,9 +75,9 @@ public class CartServiceImpl implements CartService {
     @Override
     public Cart findUserCart(Long userId) {
         Cart cart = cartRepository.findByUserId(userId);
-        int totalPrice = 0;
-        int totalDiscountedPrice = 0;
-        int totalItem = 0;
+        double totalPrice = 0;
+        double totalDiscountedPrice = 0;
+        double totalItem = 0;
         for (CartItem cartItem : cart.getCartItems()) {
             totalPrice += cartItem.getPrice();
             totalDiscountedPrice += cartItem.getDiscountedPrice();

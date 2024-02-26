@@ -48,20 +48,20 @@ public class User {
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   @JsonManagedReference
-  @EqualsAndHashCode.Exclude // không sử dụng trường này trong equals và hashcode
-  @ToString.Exclude // Ko sử dụng trong toString()
+  @EqualsAndHashCode.Exclude
+  @ToString.Exclude
   private Set<Address> addresses = new HashSet<>();
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   @JsonManagedReference
-  @EqualsAndHashCode.Exclude // không sử dụng trường này trong equals và hashcode
-  @ToString.Exclude // Ko sử dụng trong toString()
+  @EqualsAndHashCode.Exclude
+  @ToString.Exclude
   private Set<Rating> ratings = new HashSet<>();
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   @JsonManagedReference
-  @EqualsAndHashCode.Exclude // không sử dụng trường này trong equals và hashcode
-  @ToString.Exclude // Ko sử dụng trong toString()
+  @EqualsAndHashCode.Exclude
+  @ToString.Exclude
   private Set<Review> reviews = new HashSet<>();
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)

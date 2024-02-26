@@ -23,13 +23,13 @@ public class Cart {
     private double totalPrice;
 
     @Column(name="total_item")
-    private int totalItem;
+    private double totalItem;
 
     @Column(name="total_discounted_price")
-    private int totalDiscountedPrice;
+    private double totalDiscountedPrice;
 
     @Column(name="discounte")
-    private int discounte;
+    private double discounte;
 
     @OneToOne()
     @JoinColumn(name = "user_id", nullable = false)

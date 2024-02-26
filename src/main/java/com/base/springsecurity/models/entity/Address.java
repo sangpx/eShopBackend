@@ -1,8 +1,6 @@
 package com.base.springsecurity.models.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -50,15 +48,12 @@ public class Address {
     @ManyToOne
     @JoinColumn(name="user_id", insertable=false, updatable=false)
     @JsonIgnore
-    @JsonBackReference
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
     private User user;
 
     @OneToMany(mappedBy = "shippingAddress", cascade =  CascadeType.ALL )
-    @JsonManagedReference
-    @EqualsAndHashCode.Exclude // không sử dụng trường này trong equals và hashcode
-    @ToString.Exclude // Ko sử dụng trong toString()
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class , property = "id")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Set<Order> orders = new HashSet<>();
 
 

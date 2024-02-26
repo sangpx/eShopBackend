@@ -25,9 +25,9 @@ public class CartItem {
 
     private int quantity;
 
-    private int price;
+    private double price;
 
-    private int discountedPrice;
+    private double discountedPrice;
 
     @JsonIgnore
     @ManyToOne
