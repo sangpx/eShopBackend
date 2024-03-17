@@ -27,13 +27,11 @@ public class CartItemServiceImpl implements CartItemService {
     @Autowired
     private UserService userService;
 
-
     @Override
     public CartItem createCartItem(CartItem cartItem) {
         cartItem.setQuantity(1);
         cartItem.setPrice(cartItem.getProduct().getPrice() * cartItem.getQuantity());
         cartItem.setDiscountedPrice(cartItem.getProduct().getDiscountedPrice() * cartItem.getQuantity());
-
         CartItem createCartItem = cartItemRepository.save(cartItem);
         return createCartItem;
     }
@@ -52,7 +50,6 @@ public class CartItemServiceImpl implements CartItemService {
         if (!user.getId().equals(item.getUserId())) {
             throw new CartItemException("You can't update another user's cart item.");
         }
-
         // Cập nhật thuộc tính của item với giá trị mới từ cartItem truyền vào
         item.setQuantity(cartItem.getQuantity());
         item.setPrice(item.getQuantity() * item.getProduct().getPrice());

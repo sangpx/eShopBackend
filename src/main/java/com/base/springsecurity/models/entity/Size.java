@@ -3,7 +3,8 @@ package com.base.springsecurity.models.entity;
 import jakarta.persistence.Embeddable;
 import lombok.*;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Embeddable

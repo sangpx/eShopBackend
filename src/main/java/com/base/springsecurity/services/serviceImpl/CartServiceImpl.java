@@ -34,9 +34,9 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public Cart createCart(User user) {
-        Cart createCart = new Cart();
-        createCart.setUser(user);
-        return cartRepository.save(createCart);
+        Cart createdCart = new Cart();
+        createdCart.setUser(user);
+        return cartRepository.save(createdCart);
     }
 
     @Override
@@ -61,11 +61,10 @@ public class CartServiceImpl implements CartService {
             cartItem.setQuantity(cartDTO.getQuantity());
             cartItem.setUserId(userId);
 
-            int price = cartDTO.getQuantity() * product.getPrice();
+            double price = cartDTO.getQuantity() * product.getPrice();
             cartItem.setPrice(price);
             cartItem.setSize(cartDTO.getSize());
 
-//            CartItem createCartItem = cartItemService.createCartItem(cartItem);
             CartItem createCartItem = cartItemService.createCartItem(cartItem);
 
             cart.getCartItems().add(createCartItem);
@@ -76,18 +75,23 @@ public class CartServiceImpl implements CartService {
     @Override
     public Cart findUserCart(Long userId) {
         Cart cart = cartRepository.findByUserId(userId);
-        int totalPrice = 0;
-        int totalDiscountedPrice = 0;
-        int totalItem = 0;
+        double totalPrice = 0;
+        double totalDiscountedPrice = 0;
+        double totalItem = 0;
         for (CartItem cartItem : cart.getCartItems()) {
             totalPrice += cartItem.getPrice();
             totalDiscountedPrice += cartItem.getDiscountedPrice();
             totalItem += cartItem.getQuantity();
         }
 
-        cart.setTotalItem(totalItem);
+//        cart.setTotalItem(totalItem);
+//        cart.setTotalPrice(totalPrice);
+//        cart.setTotalDiscountedPrice(totalPrice - totalDiscountedPrice);
         cart.setTotalPrice(totalPrice);
-        cart.setTotalDiscountedPrice(totalPrice - totalDiscountedPrice);
+        cart.setTotalItem(cart.getCartItems().size());
+        cart.setTotalDiscountedPrice(totalDiscountedPrice);
+        cart.setDiscounte(totalPrice-totalDiscountedPrice);
+        cart.setTotalItem(totalItem);
 
         return cartRepository.save(cart);
     }

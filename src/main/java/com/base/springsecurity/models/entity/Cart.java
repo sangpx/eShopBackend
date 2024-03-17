@@ -1,14 +1,15 @@
 package com.base.springsecurity.models.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
-@Data
 @Getter
 @Setter
 @NoArgsConstructor
@@ -23,25 +24,20 @@ public class Cart {
     private double totalPrice;
 
     @Column(name="total_item")
-    private int totalItem;
+    private double totalItem;
 
     @Column(name="total_discounted_price")
-    private int totalDiscountedPrice;
+    private double totalDiscountedPrice;
 
     @Column(name="discounte")
-    private int discounte;
+    private double discounte;
 
     @OneToOne()
-    @JoinColumn(name = "user_id", nullable = false)
-    @JsonManagedReference
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "cart")
     @JsonManagedReference
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    @Column(name = "cart_items")
-    private Set<CartItem> cartItems = new HashSet<>();
+    private List<CartItem> cartItems;
 }

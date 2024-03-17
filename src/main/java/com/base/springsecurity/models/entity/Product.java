@@ -1,16 +1,16 @@
 package com.base.springsecurity.models.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.*;
-
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity
-@Data
+@Builder
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "products")
@@ -26,13 +26,13 @@ public class Product {
     private String description;
 
     @Column(name = "price")
-    private int price;
+    private double price;
 
     @Column(name = "discounted_price")
-    private int discountedPrice;
+    private double discountedPrice;
 
     @Column(name="discount_persent")
-    private int discountPersent;
+    private double discountPersent;
 
     @Column(name = "quantity")
     private int quantity;
@@ -53,28 +53,24 @@ public class Product {
     @Column(name = "sizes")
     private Set<Size> sizes = new HashSet<>();
 
-    @ManyToOne(optional=false)
-    @JoinColumn(name = "category_id")
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false, updatable = false)
     @JsonBackReference
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
     private Category category;
 
-    @OneToMany(mappedBy = "product", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JsonManagedReference
-    @EqualsAndHashCode.Exclude // không sử dụng trường này trong equals và hashcode
-    @ToString.Exclude // Ko sử dụng trong toString()
-    private Set<Rating> ratings = new HashSet<>();
+    @OneToMany(mappedBy = "product")
+//    @JsonManagedReference
+    @JsonIgnore
+    private List<CartItem> cartItems;
 
-    @OneToMany(mappedBy = "product", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JsonManagedReference
-    @EqualsAndHashCode.Exclude // không sử dụng trường này trong equals và hashcode
-    @ToString.Exclude // Ko sử dụng trong toString()
-    private Set<Review> reviews = new HashSet<>();
+    @OneToMany(mappedBy = "product")
+    private List<Rating> ratings;
 
-    @OneToMany(mappedBy = "product", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @OneToMany(mappedBy = "product")
+    private List<Review> reviews;
+
+    @OneToMany(mappedBy = "product")
     @JsonManagedReference
-    @EqualsAndHashCode.Exclude // không sử dụng trường này trong equals và hashcode
-    @ToString.Exclude // Ko sử dụng trong toString()
-    private Set<OrderItem> orderItems = new HashSet<>();
+    private List<OrderItem> orderItems;
+
 }
