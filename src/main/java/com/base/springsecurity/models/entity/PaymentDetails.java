@@ -8,7 +8,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import lombok.*;
 
-@Data
 @Getter
 @Setter
 @NoArgsConstructor
@@ -16,7 +15,6 @@ import lombok.*;
 public class PaymentDetails {
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
-
     @Enumerated(EnumType.STRING)
     private PaymentStatus status;
     private String paymentId;

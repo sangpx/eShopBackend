@@ -1,13 +1,13 @@
 package com.base.springsecurity.models.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Date;
 
-@Data
 @Getter
 @Setter
 @AllArgsConstructor
@@ -25,17 +25,13 @@ public class Rating {
     @Column(name = "created_at")
     private Date createdAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     @JsonBackReference
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "product_id")
     @JsonBackReference
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
     private Product product;
 }

@@ -9,7 +9,6 @@ import java.util.*;
 
 
 @Entity
-@Data
 @Getter
 @Setter
 @NoArgsConstructor
@@ -46,20 +45,19 @@ public class Order {
     private Date createdAt;
 
     @ManyToOne
+    @JoinColumn(name = "address_id", nullable = false)
+//    @JsonBackReference
     @JsonIgnore
-    @JoinColumn(name = "address_id" , insertable=false, updatable=false)
     private Address shippingAddress;
 
     @ManyToOne
-    @JsonIgnore
-    @JoinColumn(name = "user_id" , insertable=false, updatable=false)
+    @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class , property = "id")
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    private Set<OrderItem> orderItems = new HashSet<>();
+    @OneToMany(mappedBy = "order")
+    @JsonManagedReference
+    private List<OrderItem> orderItems;
 
     @Embedded
     private PaymentDetails paymentDetails = new PaymentDetails();

@@ -40,7 +40,8 @@ public class OrderServiceImpl implements OrderService {
     private CartService cartService;
 
     @Override
-    public Order createOrder(Long userId, Address shippingAdress) throws UserException, OrderException {
+    public Order createOrder(Long userId, Address shippingAdress)
+            throws UserException, OrderException {
         // Tìm người dùng
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserException("User not found"));
@@ -53,19 +54,27 @@ public class OrderServiceImpl implements OrderService {
 
         // Lấy giỏ hàng của người dùng
         Cart cart = cartService.findUserCart(user.getId());
-        Set<OrderItem> listOrderItems = new HashSet<>();
+        List<OrderItem> listOrderItems = new ArrayList<>();
         for (CartItem cartItem : cart.getCartItems()) {
             OrderItem orderItem = new OrderItem();
             orderItem.setPrice(cartItem.getPrice());
             orderItem.setPrice(cartItem.getPrice());
             orderItem.setProduct(cartItem.getProduct());
+            // Lấy ngày hiện tại
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(new Date());
+            // Thêm ba ngày vào ngày hiện tại
+            calendar.add(Calendar.DAY_OF_MONTH, 3);
+            // Lấy ngày vận chuyển sau khi thêm ba ngày
+            Date deliveryDate = calendar.getTime();
+            // Đặt ngày vận chuyển cho orderItem
+            orderItem.setDeliveryDate(deliveryDate);
             orderItem.setQuantity(cartItem.getQuantity());
             orderItem.setSize(cartItem.getSize());
             orderItem.setUserId(cartItem.getUserId());
             orderItem.setDiscountedPrice(cartItem.getDiscountedPrice());
-//            OrderItem createdOrderItem = orderItemRepository.save(orderItem);
-//            listOrderItems.add(createdOrderItem);
-            listOrderItems.add(orderItem);
+            OrderItem createdOrderItem = orderItemRepository.save(orderItem);
+            listOrderItems.add(createdOrderItem);
         }
 
         // Tính toán tổng số lượng và giá trị của đơn hàng
@@ -82,7 +91,15 @@ public class OrderServiceImpl implements OrderService {
         createdOrder.setTotalDiscountedPrice(totalDiscountedPrice);
         createdOrder.setDiscounte(cart.getDiscounte());
         createdOrder.setTotalItem(cart.getTotalItem());
-
+        // Lấy ngày hiện tại
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        // Thêm ba ngày vào ngày hiện tại
+        calendar.add(Calendar.DAY_OF_MONTH, 3);
+        // Lấy ngày vận chuyển sau khi thêm ba ngày
+        Date deliveryDate = calendar.getTime();
+        // Đặt ngày vận chuyển cho orderItem
+        createdOrder.setDeliveryDate(deliveryDate);
         createdOrder.setShippingAddress(address);
         createdOrder.setOrderDate(new Date());
         createdOrder.setOrderStatus(OrderStatus.PENDING);
@@ -93,9 +110,8 @@ public class OrderServiceImpl implements OrderService {
 
         for(OrderItem item : listOrderItems) {
             item.setOrder(savedOrder);
+            orderItemRepository.save(item);
         }
-
-        orderItemRepository.saveAll(listOrderItems);
         return savedOrder;
     }
 

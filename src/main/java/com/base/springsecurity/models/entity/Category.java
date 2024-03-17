@@ -1,17 +1,19 @@
 package com.base.springsecurity.models.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.util.List;
 import java.util.Set;
 
-@Data
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -23,17 +25,15 @@ public class Category {
     @NotBlank
     @Size(min = 5, message = "Category name must contain at least 5 characters")
     private String name;
-
     private int level;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne()
     @JoinColumn(name = "parent_category_id")
+    @JsonBackReference
     private Category parentCategory;
 
     //Quan he mot - nhieu
-    @OneToMany(mappedBy = "category", cascade =  CascadeType.ALL )
+    @OneToMany(mappedBy = "category")
     @JsonManagedReference
-    @EqualsAndHashCode.Exclude // không sử dụng trường này trong equals và hashcode
-    @ToString.Exclude // Ko sử dụng trong toString()
-    private Set<Product> listProducts;
+    private List<Product> listProducts;
 }

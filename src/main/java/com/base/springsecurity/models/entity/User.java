@@ -1,8 +1,10 @@
 package com.base.springsecurity.models.entity;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -11,7 +13,6 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 @Entity
-@Data
 @Getter
 @Setter
 @AllArgsConstructor
@@ -46,29 +47,22 @@ public class User {
         inverseJoinColumns = @JoinColumn(name = "role_id"))
   private Set<Role> roles = new HashSet<>();
 
-  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-  @JsonManagedReference
-  @EqualsAndHashCode.Exclude
-  @ToString.Exclude
-  private Set<Address> addresses = new HashSet<>();
+  @OneToMany(mappedBy = "user")
+//  @JsonManagedReference
+  @JsonIgnore
+  private List<Address> addresses;
 
-  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "user")
   @JsonManagedReference
-  @EqualsAndHashCode.Exclude
-  @ToString.Exclude
-  private Set<Rating> ratings = new HashSet<>();
+  private List<Rating> ratings;
 
-  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "user")
   @JsonManagedReference
-  @EqualsAndHashCode.Exclude
-  @ToString.Exclude
-  private Set<Review> reviews = new HashSet<>();
+  private List<Review> reviews;
 
-  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "user")
   @JsonManagedReference
-  @EqualsAndHashCode.Exclude
-  @ToString.Exclude
-  private Set<Order> orders = new HashSet<>();
+  private List<Order> orders;
 
   //Xet moi quan he nhieu - nhieu
   @ManyToMany(fetch = FetchType.LAZY)
@@ -76,6 +70,4 @@ public class User {
           joinColumns = @JoinColumn(name = "user_id"),
           inverseJoinColumns = @JoinColumn(name = "paymentInfomation_id"))
   private Set<PaymentInformation> listPaymentInformations = new HashSet<>();
-
-
 }

@@ -10,7 +10,6 @@ import java.util.Date;
 
 
 @Entity
-@Data
 @Getter
 @Setter
 @AllArgsConstructor
@@ -20,28 +19,23 @@ public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String size;
-
     private int quantity;
-
     private double price;
-
     @Column(name = "discounted_price")
     private double discountedPrice;
-
     private Long userId;
-
     @Column(name = "delivery_date")
     private Date deliveryDate;
 
     @ManyToOne
-    @JsonIgnore
-    @JoinColumn(name = "order_id" , insertable=false, updatable=false)
+    @JoinColumn(name = "order_id")
+//    insertable=false, updatable=false
+    @JsonBackReference
     private Order order;
 
     @ManyToOne
-    @JsonIgnore
-    @JoinColumn(name = "product_id" , insertable=false, updatable=false)
+    @JoinColumn(name = "product_id")
+    @JsonBackReference
     private Product product;
 }

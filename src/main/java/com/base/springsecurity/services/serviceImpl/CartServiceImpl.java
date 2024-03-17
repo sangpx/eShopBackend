@@ -34,9 +34,9 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public Cart createCart(User user) {
-        Cart createCart = new Cart();
-        createCart.setUser(user);
-        return cartRepository.save(createCart);
+        Cart createdCart = new Cart();
+        createdCart.setUser(user);
+        return cartRepository.save(createdCart);
     }
 
     @Override
@@ -84,9 +84,14 @@ public class CartServiceImpl implements CartService {
             totalItem += cartItem.getQuantity();
         }
 
-        cart.setTotalItem(totalItem);
+//        cart.setTotalItem(totalItem);
+//        cart.setTotalPrice(totalPrice);
+//        cart.setTotalDiscountedPrice(totalPrice - totalDiscountedPrice);
         cart.setTotalPrice(totalPrice);
-        cart.setTotalDiscountedPrice(totalPrice - totalDiscountedPrice);
+        cart.setTotalItem(cart.getCartItems().size());
+        cart.setTotalDiscountedPrice(totalDiscountedPrice);
+        cart.setDiscounte(totalPrice-totalDiscountedPrice);
+        cart.setTotalItem(totalItem);
 
         return cartRepository.save(cart);
     }

@@ -20,9 +20,10 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping("/createOrder")
-    public ResponseEntity<Order> createOrderHandler(@RequestParam Long userId, @RequestBody Address shippingAdress)
+    public ResponseEntity<Order> createOrderHandler(@RequestParam Long userId,
+        @RequestBody Address shippingAddress)
         throws UserException, OrderException {
-            Order order = orderService.createOrder(userId, shippingAdress);
+            Order order = orderService.createOrder(userId, shippingAddress);
             return new ResponseEntity<Order>(order, HttpStatus.OK);
     }
 
@@ -33,7 +34,7 @@ public class OrderController {
             return new ResponseEntity<>(orders,HttpStatus.OK);
     }
 
-    @GetMapping("/{orderId}")
+    @GetMapping("/findOrderHandler/{orderId}")
     public ResponseEntity< Order> findOrderHandler(@PathVariable Long orderId)
         throws OrderException, UserException{
             Order orders = orderService.findOrderById(orderId);

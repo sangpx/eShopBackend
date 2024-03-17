@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Set;
 
 
-@Data
 @Getter
 @Setter
 @AllArgsConstructor
@@ -45,16 +44,14 @@ public class Address {
     @Column(name = "mobile")
     private String mobile;
 
-    @ManyToOne
-    @JoinColumn(name="user_id", insertable=false, updatable=false)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name="user_id", nullable = false)
+//    @JsonBackReference
     @JsonIgnore
     private User user;
 
-    @OneToMany(mappedBy = "shippingAddress", cascade =  CascadeType.ALL )
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class , property = "id")
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    private Set<Order> orders = new HashSet<>();
-
-
+    @OneToMany(mappedBy = "shippingAddress", fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+//    @JsonManagedReference
+    @JsonIgnore
+    private List<Order> orders;
 }

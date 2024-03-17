@@ -6,6 +6,7 @@ import com.base.springsecurity.exceptions.UserException;
 import com.base.springsecurity.models.dto.catalog.cart.CartDTO;
 import com.base.springsecurity.models.dto.payload.response.MessageResponse;
 import com.base.springsecurity.models.entity.Cart;
+import com.base.springsecurity.models.entity.User;
 import com.base.springsecurity.services.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
