@@ -1,7 +1,7 @@
 # Spring boot Shop E-Commerce
 - Backend: https://github.com/sangpx/eShopBackend
 - Frontend: https://github.com/sangpx/eShopFrontend
-* Description: 
+* Backend Development with Spring Boot: 
    - Building a RESTful API for Ecommerce website.
    - Implementing user authentication and authorization.
    - Managing Product listings, Shopping carts, and Orders.
