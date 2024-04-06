@@ -51,7 +51,6 @@ public class AdminOrderController {
     public ResponseEntity<MessageResponse> deleteOrderHandler(@PathVariable Long orderId, @RequestHeader("Authorization") String jwt) throws OrderException{
         orderService.deleteOrder(orderId);
         MessageResponse res = new MessageResponse("Order Deleted Successfully",true);
-        System.out.println("delete method working....");
         return new ResponseEntity<>(res,HttpStatus.OK);
     }
 

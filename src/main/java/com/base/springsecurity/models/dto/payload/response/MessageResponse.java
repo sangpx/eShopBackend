@@ -3,7 +3,6 @@ package com.base.springsecurity.models.dto.payload.response;
 
 import lombok.*;
 
-@Data
 @Getter
 @Setter
 @AllArgsConstructor

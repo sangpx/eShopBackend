@@ -58,7 +58,6 @@ public class OrderServiceImpl implements OrderService {
         for (CartItem cartItem : cart.getCartItems()) {
             OrderItem orderItem = new OrderItem();
             orderItem.setPrice(cartItem.getPrice());
-            orderItem.setPrice(cartItem.getPrice());
             orderItem.setProduct(cartItem.getProduct());
             // Lấy ngày hiện tại
             Calendar calendar = Calendar.getInstance();
@@ -78,9 +77,11 @@ public class OrderServiceImpl implements OrderService {
         }
 
         // Tính toán tổng số lượng và giá trị của đơn hàng
-        double totalPrice = listOrderItems.stream()
+        double totalPrice = listOrderItems
+                .stream()
                 .mapToDouble(OrderItem::getPrice).sum();
-        double totalDiscountedPrice = listOrderItems.stream()
+        double totalDiscountedPrice = listOrderItems
+                .stream()
                 .mapToDouble(OrderItem::getDiscountedPrice).sum();
 
         // Tạo và lưu trữ đơn hàng
