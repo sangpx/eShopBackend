@@ -3,6 +3,7 @@ package com.base.springsecurity.services;
 import com.base.springsecurity.exceptions.ProductException;
 import com.base.springsecurity.exceptions.UserException;
 import com.base.springsecurity.models.entity.User;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Optional;
 
@@ -13,4 +14,5 @@ public interface UserService {
     Optional<User> findByUsername(String userName);
     Optional<User> findById(Long userId) throws UserException;
     User saveOrUpdate(User user);
+    UserDetails getCurrentUser();
 }
