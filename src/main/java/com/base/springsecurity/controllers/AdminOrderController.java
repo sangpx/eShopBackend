@@ -6,6 +6,7 @@ import com.base.springsecurity.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/admin/orders")
+@PreAuthorize("hasRole('ADMIN')")
 public class AdminOrderController {
     @Autowired
     private OrderService orderService;
@@ -32,19 +34,25 @@ public class AdminOrderController {
     @PutMapping("/{orderId}/ship")
     public ResponseEntity<Order> shippedOrderHandler(@PathVariable Long orderId) throws OrderException{
         Order order=orderService.shippedOrder(orderId);
-        return new ResponseEntity<Order>(order,HttpStatus.OK);
+        return new ResponseEntity<Order>(order, HttpStatus.OK);
     }
 
     @PutMapping("/{orderId}/deliver")
     public ResponseEntity<Order> deliveredOrderHandler(@PathVariable Long orderId) throws OrderException{
         Order order=orderService.deliveredOrder(orderId);
-        return new ResponseEntity<Order>(order,HttpStatus.OK);
+        return new ResponseEntity<Order>(order, HttpStatus.OK);
     }
 
     @PutMapping("/{orderId}/cancel")
     public ResponseEntity<Order> canceledOrderHandler(@PathVariable Long orderId) throws OrderException{
         Order order=orderService.cancledOrder(orderId);
-        return new ResponseEntity<Order>(order,HttpStatus.OK);
+        return new ResponseEntity<Order>(order, HttpStatus.OK);
+    }
+
+    @PutMapping("/{orderId}/placed")
+    public ResponseEntity<Order> placedOrderHandler(@PathVariable Long orderId) throws OrderException{
+        Order order=orderService.placedOrder(orderId);
+        return new ResponseEntity<Order>(order, HttpStatus.OK);
     }
 
     @DeleteMapping("/{orderId}/delete")

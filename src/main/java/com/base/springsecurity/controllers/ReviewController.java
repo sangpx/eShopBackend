@@ -55,7 +55,6 @@ public class ReviewController {
     }
 
     @GetMapping("/productReview/{productId}")
-    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     public ResponseEntity<List<Review>> getProductsReviewHandler(@PathVariable Long productId){
         List<Review> reviews =reviewService.getProductsReview(productId);
         return new ResponseEntity<>(reviews,HttpStatus.OK);

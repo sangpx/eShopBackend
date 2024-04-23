@@ -63,11 +63,4 @@ public class User {
   @OneToMany(mappedBy = "user")
   @JsonManagedReference
   private List<Order> orders;
-
-  //Xet moi quan he nhieu - nhieu
-  @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(  name = "user_paymentInfomation",
-          joinColumns = @JoinColumn(name = "user_id"),
-          inverseJoinColumns = @JoinColumn(name = "paymentInfomation_id"))
-  private Set<PaymentInformation> listPaymentInformations = new HashSet<>();
 }

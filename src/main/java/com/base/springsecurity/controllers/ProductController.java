@@ -27,7 +27,6 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/getProductPaging")
-    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     public PageResult<Page<Product>> getProductPaging(
             @RequestParam int offSet, @RequestParam int pageSize, @RequestParam String filed) throws ProductException{
         Page<Product> productPages = productService.getProductsWithPaginationAndSorting(offSet, pageSize, filed);
@@ -35,7 +34,6 @@ public class ProductController {
     }
 
     @GetMapping("/getDetailProduct")
-    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     public ResponseEntity<Product> getDetailProduct(
             @RequestParam Long productId) throws ProductException{
         Product product = productService.getDetailProduct(productId);

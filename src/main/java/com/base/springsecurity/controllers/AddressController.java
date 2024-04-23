@@ -22,14 +22,14 @@ public class AddressController {
     private AddressService addressService;
 
     @GetMapping("/getAllAddresses")
-    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<AddressDTO> getAllAddresses() {
         return addressService.getAllAddresses();
     }
 
     @GetMapping("/getAddressById/{id}")
-    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
-    public ResponseEntity<AddressDTO> getCategoryById(@PathVariable Long id) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<AddressDTO> getAddressById(@PathVariable Long id) {
         return ResponseEntity.ok(addressService.getAddressById(id));
     }
 
@@ -53,5 +53,4 @@ public class AddressController {
         addressService.deleteAddress(id);
         return ResponseEntity.ok("deleted successfully!");
     }
-
 }

@@ -48,6 +48,8 @@ public class Product {
 
     @Column(name = "created_at")
     private Date createdAt;
+    @Column(name = "updated_at")
+    private Date updatedAt;
 
     @ElementCollection
     @Column(name = "sizes")
@@ -55,11 +57,10 @@ public class Product {
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false, updatable = false)
-    @JsonBackReference
+    @JsonIgnore
     private Category category;
 
     @OneToMany(mappedBy = "product")
-//    @JsonManagedReference
     @JsonIgnore
     private List<CartItem> cartItems;
 
@@ -70,7 +71,7 @@ public class Product {
     private List<Review> reviews;
 
     @OneToMany(mappedBy = "product")
-    @JsonManagedReference
+    @JsonIgnore
     private List<OrderItem> orderItems;
 
 }

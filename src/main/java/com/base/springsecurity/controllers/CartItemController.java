@@ -26,15 +26,16 @@ public class CartItemController {
 
     //Delete Item to Cart
     @DeleteMapping("/deleteItemToCart")
-    public ResponseEntity<MessageResponse> deleteCartItemHandler(@RequestParam Long userId, @RequestParam Long cartItemId)
-            throws UserException, CartItemException {
+    public ResponseEntity<MessageResponse> deleteCartItemHandler(@RequestParam Long userId,
+         @RequestParam Long cartItemId)  throws UserException, CartItemException {
         cartItemService.removeCartItem(userId, cartItemId);
         return ResponseEntity.ok(new MessageResponse("Delete Success!", true));
     }
 
     //Update Item to Cart
     @PutMapping("/updateItemToCart/{cartItemId}")
-    public ResponseEntity<CartItem> updateCartItemHandler(@RequestParam Long userId, @PathVariable Long cartItemId, @RequestBody CartItem cartItem)
+    public ResponseEntity<CartItem> updateCartItemHandler(@RequestParam Long userId,
+              @PathVariable Long cartItemId, @RequestBody CartItem cartItem)
             throws UserException, CartItemException {
         try {
             CartItem updateCartItem = cartItemService.updateCartItem(userId, cartItemId, cartItem);

@@ -22,13 +22,11 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @GetMapping("/getAllCategories")
-    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     public List<CategoryDTO> getAllCategories() {
         return categoryService.getAllCategories();
     }
 
     @GetMapping("/getCategoryById/{id}")
-    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     public ResponseEntity<CategoryDTO> getCategoryById(@PathVariable Long id) {
         return ResponseEntity.ok(categoryService.getCategoryById(id));
     }
@@ -53,6 +51,4 @@ public class CategoryController {
         categoryService.deleteCategory(id);
         return ResponseEntity.ok("deleted successfully!");
     }
-
-
 }

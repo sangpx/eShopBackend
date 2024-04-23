@@ -56,7 +56,6 @@ public class RatingController {
     }
 
     @GetMapping("/productRating/{productId}")
-    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     public ResponseEntity<List<Rating>> getProductsReviewHandler(@PathVariable Long productId){
         List<Rating> ratings = ratingService.getProductsRating(productId);
         return new ResponseEntity<>(ratings,HttpStatus.OK);

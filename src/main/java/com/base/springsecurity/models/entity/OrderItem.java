@@ -30,12 +30,11 @@ public class OrderItem {
 
     @ManyToOne
     @JoinColumn(name = "order_id")
-//    insertable=false, updatable=false
-    @JsonBackReference
+    @JsonIgnore
     private Order order;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
-    @JsonBackReference
+    @JsonIgnore
     private Product product;
 }

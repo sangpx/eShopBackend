@@ -8,6 +8,7 @@ import com.base.springsecurity.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping("/createOrder")
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     public ResponseEntity<Order> createOrderHandler(@RequestParam Long userId,
         @RequestBody Address shippingAddress)
         throws UserException, OrderException {
@@ -28,6 +30,7 @@ public class OrderController {
     }
 
     @GetMapping("/usersOrderHistory")
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     public ResponseEntity<List<Order>> usersOrderHistoryHandler(@RequestParam Long userId)
         throws UserException, OrderException{
             List<Order> orders = orderService.usersOrderHistory(userId);
@@ -35,6 +38,7 @@ public class OrderController {
     }
 
     @GetMapping("/findOrderHandler/{orderId}")
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     public ResponseEntity< Order> findOrderHandler(@PathVariable Long orderId)
         throws OrderException, UserException{
             Order orders = orderService.findOrderById(orderId);

@@ -4,7 +4,6 @@ import com.base.springsecurity.exceptions.OrderException;
 import com.base.springsecurity.exceptions.UserException;
 import com.base.springsecurity.models.entity.*;
 import com.base.springsecurity.models.entity.domain.OrderStatus;
-import com.base.springsecurity.models.entity.domain.PaymentStatus;
 import com.base.springsecurity.repository.AddressRepository;
 import com.base.springsecurity.repository.OrderItemRepository;
 import com.base.springsecurity.repository.OrderRepository;
@@ -104,7 +103,6 @@ public class OrderServiceImpl implements OrderService {
         createdOrder.setShippingAddress(address);
         createdOrder.setOrderDate(new Date());
         createdOrder.setOrderStatus(OrderStatus.PENDING);
-        createdOrder.getPaymentDetails().setStatus(PaymentStatus.PENDING);
         createdOrder.setCreatedAt(new Date());
 
         Order savedOrder=orderRepository.save(createdOrder);
@@ -135,7 +133,6 @@ public class OrderServiceImpl implements OrderService {
     public Order placedOrder(Long orderId) throws OrderException {
         Order order = findOrderById(orderId);
         order.setOrderStatus(OrderStatus.PLACED);
-        order.getPaymentDetails().setStatus(PaymentStatus.COMPLETED);
         return order;
     }
 

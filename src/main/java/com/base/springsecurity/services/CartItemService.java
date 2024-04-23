@@ -10,7 +10,8 @@ public interface CartItemService {
 
      CartItem createCartItem(CartItem cartItem);
 
-     CartItem updateCartItem(Long userId, Long id,CartItem cartItem) throws CartItemException, UserException;
+     CartItem updateCartItem(Long userId, Long id,CartItem cartItem)
+             throws CartItemException, UserException;
 
      CartItem isCartItemExist(Cart cart, Product product, String size, Long userId);
 

@@ -46,7 +46,6 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "address_id", nullable = false)
-//    @JsonBackReference
     @JsonIgnore
     private Address shippingAddress;
 
@@ -56,9 +55,6 @@ public class Order {
     private User user;
 
     @OneToMany(mappedBy = "order")
-    @JsonManagedReference
+    @JsonIgnore
     private List<OrderItem> orderItems;
-
-    @Embedded
-    private PaymentDetails paymentDetails = new PaymentDetails();
 }

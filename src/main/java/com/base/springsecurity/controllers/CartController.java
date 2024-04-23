@@ -11,6 +11,7 @@ import com.base.springsecurity.services.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -21,13 +22,15 @@ public class CartController {
     private CartService cartService;
 
     @GetMapping("/getAllCartItemByUser")
-    public ResponseEntity<Cart> findUserCartHandler(@RequestParam Long userId) throws UserException {
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+    public ResponseEntity<Cart> getAllCartItemByUser(@RequestParam Long userId) throws UserException {
             Cart cart = cartService.findUserCart(userId);
             return new ResponseEntity<Cart>(cart, HttpStatus.OK);
     }
 
     //Add Item to Cart
     @PutMapping("/addItemToCart")
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     public ResponseEntity<MessageResponse> addItemToCart(@RequestParam Long userId, @RequestBody CartDTO cartDTO) throws ProductException {
        try {
             cartService.addCartItem(userId, cartDTO);

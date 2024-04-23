@@ -55,6 +55,7 @@ public class ProductServiceImpl implements ProductService {
                 product.setBrand(brand);
                 product.setColor(color);
                 product.setCreatedAt(new Date());
+                product.setUpdatedAt(new Date());
                 Category category = new Category();
                 category.setId(categoryId);
                 product.setCategory(category);
@@ -92,7 +93,7 @@ public class ProductServiceImpl implements ProductService {
                 product.setDiscountPersent(discountPersent);
                 product.setQuantity(quantity);
                 product.setBrand(brand);
-                product.setCreatedAt(new Date());
+                product.setUpdatedAt(new Date());
                 product.setColor(color);
                 Category category = new Category();
                 category.setId(categoryId);

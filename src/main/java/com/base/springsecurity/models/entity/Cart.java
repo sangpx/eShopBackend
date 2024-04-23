@@ -24,7 +24,7 @@ public class Cart {
     private double totalPrice;
 
     @Column(name="total_item")
-    private double totalItem;
+    private int totalItem;
 
     @Column(name="total_discounted_price")
     private double totalDiscountedPrice;
@@ -38,6 +38,6 @@ public class Cart {
     private User user;
 
     @OneToMany(mappedBy = "cart")
-    @JsonManagedReference
+//    @JsonIgnore
     private List<CartItem> cartItems;
 }
