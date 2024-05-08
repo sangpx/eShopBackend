@@ -12,6 +12,9 @@ import com.base.springsecurity.services.CartService;
 import com.base.springsecurity.services.OrderItemService;
 import com.base.springsecurity.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -39,20 +42,27 @@ public class OrderServiceImpl implements OrderService {
     private CartService cartService;
 
     @Override
-    public Order createOrder(Long userId, Address shippingAdress)
+    public Order createOrder(Address shippingAdress)
             throws UserException, OrderException {
-        // Tìm người dùng
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserException("User not found"));
+
+        // Lấy thông tin về User từ token JWT
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserName = authentication.getName();
+
+        // Lấy thông tin người dùng từ cơ sở dữ liệu
+        User currentUser = userRepository.findByUsername(currentUserName)
+                .orElseThrow(()
+                        -> new UsernameNotFoundException("Không tìm thấy thông tin người dùng!"));
+
 
         // Cập nhật địa chỉ giao hàng và lưu trữ vào cơ sở dữ liệu
-        shippingAdress.setUser(user);
+        shippingAdress.setUser(currentUser);
         Address address = addressRepository.save(shippingAdress);
-        user.getAddresses().add(address);
-        userRepository.save(user);
+        currentUser.getAddresses().add(address);
+        userRepository.save(currentUser);
 
         // Lấy giỏ hàng của người dùng
-        Cart cart = cartService.findUserCart(user.getId());
+        Cart cart = cartService.findUserCart(currentUser.getId());
         List<OrderItem> listOrderItems = new ArrayList<>();
         for (CartItem cartItem : cart.getCartItems()) {
             OrderItem orderItem = new OrderItem();
@@ -69,7 +79,6 @@ public class OrderServiceImpl implements OrderService {
             orderItem.setDeliveryDate(deliveryDate);
             orderItem.setQuantity(cartItem.getQuantity());
             orderItem.setSize(cartItem.getSize());
-            orderItem.setUserId(cartItem.getUserId());
             orderItem.setDiscountedPrice(cartItem.getDiscountedPrice());
             OrderItem createdOrderItem = orderItemRepository.save(orderItem);
             listOrderItems.add(createdOrderItem);
@@ -85,7 +94,7 @@ public class OrderServiceImpl implements OrderService {
 
         // Tạo và lưu trữ đơn hàng
         Order createdOrder = new Order();
-        createdOrder.setUser(user);
+        createdOrder.setUser(currentUser);
         createdOrder.setOrderItems(listOrderItems);
         createdOrder.setTotalPrice(totalPrice);
         createdOrder.setTotalDiscountedPrice(totalDiscountedPrice);
@@ -125,7 +134,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> usersOrderHistory(Long userId) {
-        List<Order> listOrders = orderRepository.getUsersOrders(userId);
+        List<Order> listOrders = orderRepository.getUserOrders(userId);
         return listOrders;
     }
 

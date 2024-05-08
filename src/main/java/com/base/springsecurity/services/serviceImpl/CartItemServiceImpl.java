@@ -8,9 +8,13 @@ import com.base.springsecurity.models.entity.Product;
 import com.base.springsecurity.models.entity.User;
 import com.base.springsecurity.repository.CartItemRepository;
 import com.base.springsecurity.repository.CartRepository;
+import com.base.springsecurity.repository.UserRepository;
 import com.base.springsecurity.services.CartItemService;
 import com.base.springsecurity.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -27,6 +31,9 @@ public class CartItemServiceImpl implements CartItemService {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @Override
     public CartItem createCartItem(CartItem cartItem) {
         cartItem.setQuantity(1);
@@ -38,18 +45,18 @@ public class CartItemServiceImpl implements CartItemService {
 
     @Override
     public CartItem updateCartItem(Long userId, Long id, CartItem cartItem) throws CartItemException, UserException {
+        // Lấy thông tin người dùng hiện tại từ đối tượng Authentication
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        Optional<User> OptionalUser = userRepository.findByUsername(userDetails.getUsername());
+        User currentUser = OptionalUser.get();
+
+        // Kiểm tra xem userId có trùng với người dùng hiện tại không
+        if (!currentUser.getId().equals(userId)) {
+            throw new RuntimeException("You are not authorized to update items to another user's cart");
+        }
+
         CartItem item = findCartItemById(id);
-        Optional<User> userOptional = userService.findById(userId);
-
-        if (!userOptional.isPresent()) {
-            throw new UserException("User not found with id: " + userId);
-        }
-
-        User user = userOptional.get();
-
-        if (!user.getId().equals(item.getUserId())) {
-            throw new CartItemException("You can't update another user's cart item.");
-        }
         // Cập nhật thuộc tính của item với giá trị mới từ cartItem truyền vào
         item.setQuantity(cartItem.getQuantity());
         item.setPrice(item.getQuantity() * item.getProduct().getPrice());
@@ -61,24 +68,36 @@ public class CartItemServiceImpl implements CartItemService {
 
     @Override
     public CartItem isCartItemExist(Cart cart, Product product, String size, Long userId) {
+        // Lấy thông tin người dùng hiện tại từ đối tượng Authentication
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        Optional<User> OptionalUser = userRepository.findByUsername(userDetails.getUsername());
+        User currentUser = OptionalUser.get();
+        // Kiểm tra xem userId có trùng với người dùng hiện tại không
+        if (!currentUser.getId().equals(userId)) {
+            throw new RuntimeException("You are not authorized to see items to another user's cart");
+        }
         CartItem cartItem = cartItemRepository.isCartItemExist(cart, product, size, userId);
         return cartItem;
     }
 
     @Override
     public void removeCartItem(Long userId, Long cartItemId) throws CartItemException, UserException {
-        CartItem cartItem = findCartItemById(cartItemId);
-        Optional<User> userOtp = userService.findById(userId);
-        if(userOtp.isPresent()) {
-           User user = userOtp.get();
-            if(user.getId().equals(cartItem.getUserId())) {
-                cartItemRepository.deleteById(cartItemId);
-            } else  {
-                throw new CartItemException("Cart item does not belong to the specified user.");
-            }
+        // Lấy thông tin người dùng hiện tại từ đối tượng Authentication
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        Optional<User> OptionalUser = userRepository.findByUsername(userDetails.getUsername());
+        User currentUser = OptionalUser.get();
+
+        // Kiểm tra xem userId có trùng với người dùng hiện tại không
+        if (!currentUser.getId().equals(userId)) {
+            throw new RuntimeException("You are not authorized to remove items to another user's cart");
         }
-        else {
-            throw new UserException("You can't remove another users item!");
+        CartItem cartItem = findCartItemById(cartItemId);
+        if(currentUser.getId().equals(cartItem.getUserId())) {
+            cartItemRepository.deleteById(cartItemId);
+        } else  {
+            throw new CartItemException("Cart item does not belong to the specified user.");
         }
     }
 

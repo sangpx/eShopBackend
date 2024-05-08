@@ -4,11 +4,12 @@ import com.base.springsecurity.exceptions.OrderException;
 import com.base.springsecurity.exceptions.UserException;
 import com.base.springsecurity.models.entity.Address;
 import com.base.springsecurity.models.entity.Order;
+import com.base.springsecurity.models.entity.OrderItem;
 
 import java.util.List;
 
 public interface OrderService {
-    Order createOrder(Long userId, Address shippingAdress) throws UserException, OrderException;
+    Order createOrder(Address shippingAdress) throws UserException, OrderException;
 
     Order findOrderById(Long orderId) throws OrderException;
 

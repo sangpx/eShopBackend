@@ -30,7 +30,7 @@ public class Cart {
     private double totalDiscountedPrice;
 
     @Column(name="discounte")
-    private double discounte;
+    private long discounte;
 
     @OneToOne()
     @JoinColumn(name = "user_id")
