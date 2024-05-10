@@ -24,11 +24,11 @@ public class JwtUtils {
   @Value("${ecommerce.app.jwtExpirationMs}")
   private int jwtExpirationMs; // Thoi gian het han Token
 
-  //Tu tong tin User -> tao JWT
+  //Từ thông tin User -> tạo JWT
   public String generateJwtToken(Authentication authentication) {
 
     UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
-    //Tao chuoi JWT tu userName
+    //Tạo chuỗi JWT từ userName
     return Jwts.builder()
         .setSubject((userPrincipal.getUsername())) //tao JWT tu User
         .setIssuedAt(new Date()) // Ngay Tao
@@ -36,6 +36,7 @@ public class JwtUtils {
         .signWith(key(), SignatureAlgorithm.HS256) // Thuat toan ma hoa
         .compact(); //generate ra token
   }
+
   
   private Key key() {
     return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
@@ -63,5 +64,13 @@ public class JwtUtils {
       logger.error("JWT claims string is empty: {}", e.getMessage());
     }
     return false;
+  }
+
+  //Refresh Token
+  public String generateTokenFromUsername(String username) {
+    return Jwts.builder().setSubject(username).setIssuedAt(new Date())
+            .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
+            .signWith(SignatureAlgorithm.HS256, jwtSecret)
+            .compact();
   }
 }
