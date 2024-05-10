@@ -24,7 +24,6 @@ public class OrderItem {
     private double price;
     @Column(name = "discounted_price")
     private double discountedPrice;
-    private Long userId;
     @Column(name = "delivery_date")
     private Date deliveryDate;
 

@@ -13,6 +13,9 @@ import com.base.springsecurity.services.CartItemService;
 import com.base.springsecurity.services.CartService;
 import com.base.springsecurity.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -41,14 +44,23 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public String addCartItem(Long userId, CartDTO cartDTO) throws  ProductException {
+        // Lấy thông tin người dùng hiện tại từ đối tượng Authentication
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        Optional<User> OptionalUser = userRepository.findByUsername(userDetails.getUsername());
+        User currentUser = OptionalUser.get();
+
+        // Kiểm tra xem userId có trùng với người dùng hiện tại không
+        if (!currentUser.getId().equals(userId)) {
+            throw new RuntimeException("You are not authorized to add items to another user's cart");
+        }
+
         Cart cart = cartRepository.findByUserId(userId);
         if(cart == null) {
             // Nếu giỏ hàng chưa tồn tại, tạo một giỏ hàng mới
             cart = new Cart();
             // Gán người dùng cho giỏ hàng
-            User user = userRepository.findById(userId)
-                    .orElseThrow(() -> new RuntimeException("User not found"));
-            cart.setUser(user);
+            cart.setUser(currentUser);
             // Lưu giỏ hàng vào cơ sở dữ liệu
             cart = cartRepository.save(cart);
         }
@@ -74,9 +86,20 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public Cart findUserCart(Long userId) {
+        // Lấy thông tin người dùng hiện tại từ đối tượng Authentication
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        Optional<User> OptionalUser = userRepository.findByUsername(userDetails.getUsername());
+        User currentUser = OptionalUser.get();
+
+        // Kiểm tra xem userId có trùng với người dùng hiện tại không
+        if (!currentUser.getId().equals(userId)) {
+            throw new RuntimeException("You are not authorized to see items to another user's cart");
+        }
+
         Cart cart = cartRepository.findByUserId(userId);
-        double totalPrice = 0;
-        double totalDiscountedPrice = 0;
+        long totalPrice = 0;
+        long totalDiscountedPrice = 0;
         int totalItem = 0;
         for (CartItem cartItem : cart.getCartItems()) {
             totalPrice += cartItem.getPrice();
@@ -88,7 +111,7 @@ public class CartServiceImpl implements CartService {
         cart.setTotalDiscountedPrice(totalDiscountedPrice);
         cart.setDiscounte(totalPrice-totalDiscountedPrice);
         cart.setTotalItem(totalItem);
-
+        cart.setUser(currentUser);
         return cartRepository.save(cart);
     }
 }

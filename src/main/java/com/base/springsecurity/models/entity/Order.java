@@ -32,7 +32,7 @@ public class Order {
     private double totalDiscountedPrice;
 
     @Column(name="discounte")
-    private double discounte;
+    private long discounte;
 
     @Column(name="order_status")
     @Enumerated(EnumType.STRING)

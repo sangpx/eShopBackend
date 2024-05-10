@@ -22,10 +22,9 @@ public class OrderController {
 
     @PostMapping("/createOrder")
     @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
-    public ResponseEntity<Order> createOrderHandler(@RequestParam Long userId,
-        @RequestBody Address shippingAddress)
+    public ResponseEntity<Order> createOrderHandler(@RequestBody Address shippingAddress)
         throws UserException, OrderException {
-            Order order = orderService.createOrder(userId, shippingAddress);
+            Order order = orderService.createOrder(shippingAddress);
             return new ResponseEntity<Order>(order, HttpStatus.OK);
     }
 
@@ -38,7 +37,7 @@ public class OrderController {
     }
 
     @GetMapping("/findOrderHandler/{orderId}")
-    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity< Order> findOrderHandler(@PathVariable Long orderId)
         throws OrderException, UserException{
             Order orders = orderService.findOrderById(orderId);

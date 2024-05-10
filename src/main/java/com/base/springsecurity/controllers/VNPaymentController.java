@@ -1,9 +1,13 @@
 package com.base.springsecurity.controllers;
 
+import com.base.springsecurity.exceptions.OrderException;
+import com.base.springsecurity.models.entity.Order;
+import com.base.springsecurity.services.OrderService;
 import com.base.springsecurity.vnpay.Config;
 import com.base.springsecurity.models.dto.catalog.payment.PaymentResDTO;
 import com.base.springsecurity.models.dto.payload.response.MessageResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +23,14 @@ import java.util.*;
 @RequestMapping("/api/payments")
 public class VNPaymentController {
 
+    @Autowired
+    private OrderService orderService;
+
     @GetMapping("/create_payment")
-    public ResponseEntity<?> createPayment(HttpServletRequest req) throws UnsupportedEncodingException {
+    public ResponseEntity<?> createPayment(HttpServletRequest req, @RequestParam Long orderId)
+            throws UnsupportedEncodingException, OrderException {
+
+        Order order = orderService.findOrderById(orderId);
 
         String orderType = "other";
         String vnp_TxnRef = Config.getRandomNumber(8);
@@ -28,7 +38,8 @@ public class VNPaymentController {
 
         String vnp_TmnCode = Config.vnp_TmnCode;
 
-        long amount = 10000*100;
+        long amount = order.getDiscounte() * 100;
+
 
         Map<String, String> vnp_Params = new HashMap<>();
         vnp_Params.put("vnp_Version", Config.vnp_Version);
