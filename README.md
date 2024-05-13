@@ -1,7 +1,7 @@
 # Spring boot Shop E-Commerce
-* Backend: https://github.com/sangpx/eShopBackend
-* Frontend: https://github.com/sangpx/eShopFrontend
-# Backend Development with Spring Boot:
+- Backend: https://github.com/sangpx/eShopBackend
+- Frontend: https://github.com/sangpx/eShopFrontend
+# Responsibility:
 - Building a RESTful API for Ecommerce website.
 - Implementing user authentication and authorization by JWT.
 - Implementing Refresh Token with JWT
