@@ -1,21 +1,29 @@
 package com.base.springsecurity.services.serviceImpl;
 
-import com.base.springsecurity.exceptions.APIException;
 import com.base.springsecurity.exceptions.ResourceNotFoundException;
 import com.base.springsecurity.models.dto.catalog.category.CategoryDTO;
 import com.base.springsecurity.models.entity.Category;
 import com.base.springsecurity.repository.CategoryRepository;
 import com.base.springsecurity.services.CategoryService;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.lang.module.ResolutionException;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
+
+    @Autowired
+    RedisTemplate redisTemplate;
+
+    private Gson gson = new Gson();
 
     @Autowired
     private CategoryRepository categoryRepository;
@@ -25,11 +33,31 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<CategoryDTO> getAllCategories() {
-        //Map DTO -> Entity
-        List<Category> categoryList = categoryRepository.findAll();
-        //Map Entity -> DTO
-       return categoryList.stream().map(category -> modelMapper.map(category, CategoryDTO.class))
-                .collect(Collectors.toList());
+        List<CategoryDTO> categoryDTOList = new ArrayList<>();
+        //Khi xu ly lan dau tien, se len Redis server lay data
+        String dataRedis = (String) redisTemplate.opsForValue().get("categories");
+        //Neu dataRedis tren server khong co gia tri
+        if (dataRedis == null) {
+            System.out.println("Chưa có dữ liệu!");
+            //Map DTO -> Entity
+            List<Category> categoryList = categoryRepository.findAll();
+            //Map Entity -> DTO
+            categoryDTOList = categoryList
+                    .stream()
+                    .map(category ->
+                            modelMapper.map(category, CategoryDTO.class))
+                    .collect(Collectors.toList());
+
+            //parse kieu du kieu tu Object -> String
+            String dataJson = gson.toJson(categoryDTOList);
+            redisTemplate.opsForValue().set("categories", dataJson);
+        } else {
+            Type listType = new TypeToken<List<CategoryDTO>>(){}.getType();
+            //part kieu du lieu tu String -> Json
+            categoryDTOList = gson.fromJson(dataRedis, listType);
+            System.out.println("Có dữ liệu!");
+        }
+        return categoryDTOList;
     }
 
     @Override
