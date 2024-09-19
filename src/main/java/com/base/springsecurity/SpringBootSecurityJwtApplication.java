@@ -1,6 +1,6 @@
 package com.base.springsecurity;
 
-import com.base.springsecurity.services.FilesStorageService;
+import com.base.springsecurity.service.FilesStorageService;
 import jakarta.annotation.Resource;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;

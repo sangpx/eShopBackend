@@ -1,6 +1,6 @@
 package com.base.springsecurity.repository;
 
-import com.base.springsecurity.models.entity.Review;
+import com.base.springsecurity.model.entity.Review;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

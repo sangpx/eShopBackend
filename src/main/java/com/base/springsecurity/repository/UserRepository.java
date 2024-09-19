@@ -2,7 +2,7 @@ package com.base.springsecurity.repository;
 
 import java.util.Optional;
 
-import com.base.springsecurity.models.entity.User;
+import com.base.springsecurity.model.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

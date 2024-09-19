@@ -1,7 +1,7 @@
 package com.base.springsecurity.security.services;
 
-import com.base.springsecurity.models.entity.User;
-import com.base.springsecurity.services.UserService;
+import com.base.springsecurity.model.entity.User;
+import com.base.springsecurity.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

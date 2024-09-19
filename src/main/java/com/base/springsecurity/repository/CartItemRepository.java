@@ -1,8 +1,8 @@
 package com.base.springsecurity.repository;
 
-import com.base.springsecurity.models.entity.Cart;
-import com.base.springsecurity.models.entity.CartItem;
-import com.base.springsecurity.models.entity.Product;
+import com.base.springsecurity.model.entity.Cart;
+import com.base.springsecurity.model.entity.CartItem;
+import com.base.springsecurity.model.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

@@ -1,7 +1,7 @@
 package com.base.springsecurity.repository;
 
-import com.base.springsecurity.models.entity.RefreshToken;
-import com.base.springsecurity.models.entity.User;
+import com.base.springsecurity.model.entity.RefreshToken;
+import com.base.springsecurity.model.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
