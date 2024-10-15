@@ -26,11 +26,6 @@ public class Category {
     private String name;
     private int level;
 
-    @ManyToOne()
-    @JoinColumn(name = "parent_category_id")
-    @JsonBackReference
-    private Category parentCategory;
-
     //Quan he mot - nhieu
     @OneToMany(mappedBy = "category")
     @JsonIgnore
