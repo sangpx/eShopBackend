@@ -14,7 +14,7 @@ import java.util.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "orders")
-public class Order {
+public class Order extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -40,9 +40,6 @@ public class Order {
 
     @Column(name="total_item")
     private double totalItem;
-
-    @Column(name="created_at")
-    private Date createdAt;
 
     @ManyToOne
     @JoinColumn(name = "address_id", nullable = false)

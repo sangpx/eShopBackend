@@ -12,16 +12,13 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 @Table(name = "reviews")
-public class Review
+public class Review extends BaseEntity
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String review;
-
-    @Column(name = "created_at")
-    private Date createdAt;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
