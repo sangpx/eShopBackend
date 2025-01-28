@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
-public class SpringBootSecurityJwtApplication implements CommandLineRunner {
+public class EShopApplication implements CommandLineRunner {
 
 	@Resource
 	private FilesStorageService storageService;
@@ -23,7 +23,7 @@ public class SpringBootSecurityJwtApplication implements CommandLineRunner {
 	public static void main(String[] args) {
 		System.out.println();
 		System.out.println("                                  -=-=-=-=-=-=-=-=-=-=-=-=-=- Application is Starting -=-=-=-=-=-=-=-=-=-=-=-=-=-");
-		SpringApplication.run(SpringBootSecurityJwtApplication.class, args);
+		SpringApplication.run(EShopApplication.class, args);
 		System.out.println();
 		System.out.println("                                  -=-=-=-=-=-=-=-=-=-=-=-=-=- Application is Working Fine -=-=-=-=-=-=-=-=-=-=-=-=-=-");
 	}

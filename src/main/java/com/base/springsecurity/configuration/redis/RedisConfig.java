@@ -1,4 +1,4 @@
-package com.base.springsecurity.configuration;
+package com.base.springsecurity.configuration.redis;
 
 
 import org.springframework.context.annotation.Bean;

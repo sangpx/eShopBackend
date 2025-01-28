@@ -1,4 +1,4 @@
-package com.base.springsecurity.vnpay;
+package com.base.springsecurity.configuration.vnpay;
 
 import jakarta.servlet.http.HttpServletRequest;
 

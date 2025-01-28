@@ -3,7 +3,7 @@ package com.base.springsecurity.controller;
 import com.base.springsecurity.exception.OrderException;
 import com.base.springsecurity.model.entity.Order;
 import com.base.springsecurity.service.OrderService;
-import com.base.springsecurity.vnpay.Config;
+import com.base.springsecurity.configuration.vnpay.Config;
 import com.base.springsecurity.model.dto.catalog.payment.PaymentResDTO;
 import com.base.springsecurity.model.dto.payload.response.MessageResponse;
 import jakarta.servlet.http.HttpServletRequest;
