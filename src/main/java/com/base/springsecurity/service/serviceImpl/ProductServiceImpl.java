@@ -7,6 +7,7 @@ import com.base.springsecurity.model.entity.Product;
 import com.base.springsecurity.repository.ProductRepository;
 import com.base.springsecurity.service.FilesStorageService;
 import com.base.springsecurity.service.ProductService;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,16 +21,12 @@ import java.util.List;
 
 
 @Service
+@RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
-    @Autowired
-    private ProductRepository productRepository;
-
-    @Autowired
-    private FilesStorageService storageService;
-
-    @Autowired
-    private ModelMapper modelMapper;
+    private final ProductRepository productRepository;
+    private final FilesStorageService storageService;
+    private final ModelMapper modelMapper;
 
     //Insert Product
     @Override
@@ -117,9 +114,6 @@ public class ProductServiceImpl implements ProductService {
     public Product getDetailProduct(Long productId) throws ProductException {
         Product productFromDB = productRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId));
-        if (productFromDB == null) {
-            throw new ProductException("Product not found with productId: " + productId);
-        }
         return productFromDB;
     }
 

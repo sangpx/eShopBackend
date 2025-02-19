@@ -9,6 +9,7 @@ import com.base.springsecurity.model.entity.User;
 import com.base.springsecurity.security.services.UserDetailsImpl;
 import com.base.springsecurity.service.RatingService;
 import com.base.springsecurity.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,15 +25,12 @@ import java.util.Optional;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/ratings")
+@RequiredArgsConstructor
 public class RatingController {
-    @Autowired
-    private RatingService ratingService;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private UserService userService;
+    private final RatingService ratingService;
+    private final AuthenticationManager authenticationManager;
+    private final UserService userService;
 
     @PostMapping("/createRating")
     @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")

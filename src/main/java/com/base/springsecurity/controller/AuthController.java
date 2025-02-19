@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.base.springsecurity.exception.ResourceNotFoundException;
 import com.base.springsecurity.exception.TokenRefreshException;
 import com.base.springsecurity.model.dto.payload.request.LoginRequest;
 import com.base.springsecurity.model.dto.payload.request.SignupRequest;
@@ -24,6 +25,7 @@ import com.base.springsecurity.service.RoleService;
 import com.base.springsecurity.service.UserService;
 import jakarta.validation.Valid;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -40,27 +42,16 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
+@RequiredArgsConstructor
 public class AuthController {
-    @Autowired
-    private AuthenticationManager authenticationManager;
 
-    @Autowired
-    private PasswordEncoder encoder;
-
-    @Autowired
-    private JwtUtils jwtUtils;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private RoleService roleService;
-
-    @Autowired
-    private CartService cartService;
-
-    @Autowired
-    private RefreshTokenService refreshTokenService;
+    private final AuthenticationManager authenticationManager;
+    private final PasswordEncoder encoder;
+    private final JwtUtils jwtUtils;
+    private final UserService userService;
+    private final RoleService roleService;
+    private final CartService cartService;
+    private final RefreshTokenService refreshTokenService;
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -119,7 +110,7 @@ public class AuthController {
         //Kiem tra Role co bi null khong
         if (strRoles == null) {
             Role userRole = roleService.findByRoleName(ERole.ROLE_USER)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                    .orElseThrow(() -> new ResourceNotFoundException("Error: Role is not found."));
             //Add Role mac dinh la User
             roles.add(userRole);
         } else {
@@ -127,19 +118,19 @@ public class AuthController {
                 switch (role) {
                     case "ROLE_ADMIN":
                         Role adminRole = roleService.findByRoleName(ERole.ROLE_ADMIN)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                                .orElseThrow(() -> new ResourceNotFoundException("Error: Role is not found."));
                         roles.add(adminRole);
 
                         break;
                     case "ROLE_MODERATOR":
                         Role modRole = roleService.findByRoleName(ERole.ROLE_MODERATOR)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                                .orElseThrow(() -> new ResourceNotFoundException("Error: Role is not found."));
                         roles.add(modRole);
 
                         break;
                     default:
                         Role userRole = roleService.findByRoleName(ERole.ROLE_USER)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                                .orElseThrow(() -> new ResourceNotFoundException("Error: Role is not found."));
                         roles.add(userRole);
                 }
             });

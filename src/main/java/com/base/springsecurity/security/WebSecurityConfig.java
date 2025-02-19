@@ -24,11 +24,10 @@ WebSecurityConfiglà mấu chốt trong việc triển khai bảo mật của ch
 
 @Configuration
 @EnableMethodSecurity
-
 public class WebSecurityConfig {
-  @Autowired
-  UserDetailsServiceImpl userDetailsService;
 
+  @Autowired
+  private UserDetailsServiceImpl userDetailsService;
   @Autowired
   private AuthEntryPointJwt unauthorizedHandler;
 
@@ -37,7 +36,7 @@ public class WebSecurityConfig {
     return new AuthTokenFilter();
   }
 
-  
+
   @Bean
   public DaoAuthenticationProvider authenticationProvider() {
       DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();

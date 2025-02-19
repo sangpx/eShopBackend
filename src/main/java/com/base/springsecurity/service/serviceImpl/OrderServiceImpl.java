@@ -11,6 +11,7 @@ import com.base.springsecurity.repository.UserRepository;
 import com.base.springsecurity.service.CartService;
 import com.base.springsecurity.service.OrderItemService;
 import com.base.springsecurity.service.OrderService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,25 +22,15 @@ import java.util.*;
 
 
 @Service
+@RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
-    @Autowired
-    private OrderRepository orderRepository;
-
-    @Autowired
-    private OrderItemRepository orderItemRepository;
-
-    @Autowired
-    private AddressRepository addressRepository;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private OrderItemService orderItemService;
-
-    @Autowired
-    private CartService cartService;
+    private final OrderRepository orderRepository;
+    private final OrderItemRepository orderItemRepository;
+    private final AddressRepository addressRepository;
+    private final UserRepository userRepository;
+    private final OrderItemService orderItemService;
+    private final CartService cartService;
 
     @Override
     public Order createOrder(Address shippingAdress)

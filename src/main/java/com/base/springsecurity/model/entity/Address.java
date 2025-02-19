@@ -13,10 +13,8 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "address")
-public class Address extends BaseEntity{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Address extends AbstractBaseEntity<Long> {
+
 
     @Column(name="first_name")
     private String firstName;

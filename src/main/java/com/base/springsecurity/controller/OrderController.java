@@ -5,6 +5,7 @@ import com.base.springsecurity.exception.UserException;
 import com.base.springsecurity.model.entity.Address;
 import com.base.springsecurity.model.entity.Order;
 import com.base.springsecurity.service.OrderService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +17,10 @@ import java.util.List;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/orders")
+@RequiredArgsConstructor
 public class OrderController {
-    @Autowired
-    private OrderService orderService;
+
+    private final OrderService orderService;
 
     @PostMapping("/createOrder")
     @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")

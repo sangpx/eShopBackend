@@ -13,10 +13,8 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "order_items")
-public class OrderItem extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class OrderItem extends AbstractBaseEntity<Long> {
+
     private String size;
     private int quantity;
     private double price;

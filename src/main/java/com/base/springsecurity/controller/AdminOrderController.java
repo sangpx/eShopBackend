@@ -3,6 +3,7 @@ import com.base.springsecurity.exception.OrderException;
 import com.base.springsecurity.model.dto.payload.response.MessageResponse;
 import com.base.springsecurity.model.entity.Order;
 import com.base.springsecurity.service.OrderService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +16,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/admin/orders")
 @PreAuthorize("hasRole('ADMIN')")
+@RequiredArgsConstructor
 public class AdminOrderController {
-    @Autowired
-    private OrderService orderService;
+    
+    private final OrderService orderService;
 
     @GetMapping("/getAllOrdersHandler")
     public ResponseEntity<List<Order>> getAllOrdersHandler(){

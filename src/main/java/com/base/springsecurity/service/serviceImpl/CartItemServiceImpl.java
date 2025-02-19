@@ -1,6 +1,7 @@
 package com.base.springsecurity.service.serviceImpl;
 
 import com.base.springsecurity.exception.CartItemException;
+import com.base.springsecurity.exception.ResourceNotFoundException;
 import com.base.springsecurity.exception.UserException;
 import com.base.springsecurity.model.entity.Cart;
 import com.base.springsecurity.model.entity.CartItem;
@@ -11,6 +12,7 @@ import com.base.springsecurity.repository.CartRepository;
 import com.base.springsecurity.repository.UserRepository;
 import com.base.springsecurity.service.CartItemService;
 import com.base.springsecurity.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,27 +22,18 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class CartItemServiceImpl implements CartItemService {
 
-    @Autowired
-    private CartItemRepository cartItemRepository;
-
-    @Autowired
-    private CartRepository cartRepository;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private UserRepository userRepository;
+    private final CartItemRepository cartItemRepository;
+    private final UserRepository userRepository;
 
     @Override
     public CartItem createCartItem(CartItem cartItem) {
         cartItem.setQuantity(1);
         cartItem.setPrice(cartItem.getProduct().getPrice() * cartItem.getQuantity());
         cartItem.setDiscountedPrice(cartItem.getProduct().getDiscountedPrice() * cartItem.getQuantity());
-        CartItem createCartItem = cartItemRepository.save(cartItem);
-        return createCartItem;
+        return cartItemRepository.save(cartItem);
     }
 
     @Override
@@ -53,7 +46,7 @@ public class CartItemServiceImpl implements CartItemService {
 
         // Kiểm tra xem userId có trùng với người dùng hiện tại không
         if (!currentUser.getId().equals(userId)) {
-            throw new RuntimeException("You are not authorized to update items to another user's cart");
+            throw new UserException("You are not authorized to update items to another user's cart");
         }
 
         CartItem item = findCartItemById(id);
@@ -67,7 +60,7 @@ public class CartItemServiceImpl implements CartItemService {
     }
 
     @Override
-    public CartItem isCartItemExist(Cart cart, Product product, String size, Long userId) {
+    public CartItem isCartItemExist(Cart cart, Product product, String size, Long userId) throws CartItemException, UserException {
         // Lấy thông tin người dùng hiện tại từ đối tượng Authentication
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
@@ -75,7 +68,7 @@ public class CartItemServiceImpl implements CartItemService {
         User currentUser = OptionalUser.get();
         // Kiểm tra xem userId có trùng với người dùng hiện tại không
         if (!currentUser.getId().equals(userId)) {
-            throw new RuntimeException("You are not authorized to see items to another user's cart");
+            throw new UserException("You are not authorized to see items to another user's cart");
         }
         CartItem cartItem = cartItemRepository.isCartItemExist(cart, product, size, userId);
         return cartItem;
@@ -91,7 +84,7 @@ public class CartItemServiceImpl implements CartItemService {
 
         // Kiểm tra xem userId có trùng với người dùng hiện tại không
         if (!currentUser.getId().equals(userId)) {
-            throw new RuntimeException("You are not authorized to remove items to another user's cart");
+            throw new UserException("You are not authorized to remove items to another user's cart");
         }
         CartItem cartItem = findCartItemById(cartItemId);
         if(currentUser.getId().equals(cartItem.getUserId())) {

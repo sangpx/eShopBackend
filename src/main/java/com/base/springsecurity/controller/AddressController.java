@@ -4,6 +4,7 @@ package com.base.springsecurity.controller;
 import com.base.springsecurity.model.dto.catalog.address.AddressDTO;
 import com.base.springsecurity.service.AddressService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +16,10 @@ import java.util.List;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/addresses")
+@RequiredArgsConstructor
 public class AddressController {
 
-    @Autowired
-    private AddressService addressService;
+    private final AddressService addressService;
 
     @GetMapping("/getAllAddresses")
     @PreAuthorize("hasRole('ADMIN')")

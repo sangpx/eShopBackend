@@ -12,10 +12,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "cart_items")
-public class CartItem extends BaseEntity{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class CartItem extends AbstractBaseEntity<Long> {
+
 
     private Long userId;
 

@@ -3,6 +3,7 @@ package com.base.springsecurity.controller;
 import com.base.springsecurity.model.dto.catalog.category.CategoryDTO;
 import com.base.springsecurity.service.CategoryService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,11 +15,11 @@ import java.util.List;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/categories")
+@RequiredArgsConstructor
 public class CategoryController {
 
     //DI CategoryService
-    @Autowired
-    private CategoryService categoryService;
+    private final CategoryService categoryService;
 
     @GetMapping("/getAllCategories")
     public List<CategoryDTO> getAllCategories() {

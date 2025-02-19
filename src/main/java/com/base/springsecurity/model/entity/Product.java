@@ -12,10 +12,8 @@ import java.util.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "products")
-public class Product extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class Product extends AbstractBaseEntity<Long> {
+
 
     @Column(name = "title")
     private String title;

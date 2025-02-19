@@ -13,7 +13,7 @@ public interface CartItemService {
      CartItem updateCartItem(Long userId, Long id,CartItem cartItem)
              throws CartItemException, UserException;
 
-     CartItem isCartItemExist(Cart cart, Product product, String size, Long userId);
+     CartItem isCartItemExist(Cart cart, Product product, String size, Long userId) throws CartItemException, UserException;
 
      void removeCartItem(Long userId,Long cartItemId) throws CartItemException, UserException;
 

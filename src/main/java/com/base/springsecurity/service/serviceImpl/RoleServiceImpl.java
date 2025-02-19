@@ -4,17 +4,17 @@ import com.base.springsecurity.model.entity.domain.ERole;
 import com.base.springsecurity.model.entity.Role;
 import com.base.springsecurity.repository.RoleRepository;
 import com.base.springsecurity.service.RoleService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 @Service //Đánh dấu một Class là tầng Service, phục vụ các logic nghiệp vụ.
-
+@RequiredArgsConstructor
 public class RoleServiceImpl implements RoleService {
 
-    @Autowired
-    private RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
 
     @Override
     public List<Role> getAllRoles() {

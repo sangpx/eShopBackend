@@ -22,10 +22,8 @@ import lombok.*;
       @UniqueConstraint(columnNames = "username"),
       @UniqueConstraint(columnNames = "email")
     })
-public class User extends BaseEntity{
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+public class User extends AbstractBaseEntity<Long> {
+
 
   @NotBlank
   @Size(max = 20)

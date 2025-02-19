@@ -1,7 +1,6 @@
 package com.base.springsecurity.model.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -17,10 +16,8 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "categories")
-public class Category extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Category extends AbstractBaseEntity<Long> {
+
     @NotBlank
     @Size(min = 5, message = "Category name must contain at least 5 characters")
     private String name;
