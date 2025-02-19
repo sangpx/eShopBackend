@@ -1,11 +1,13 @@
 package com.base.springsecurity.security.services;
 
+import java.io.Serial;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 import com.base.springsecurity.model.entity.User;
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,6 +20,7 @@ UserDetailschứa các thông tin cần thiết (như: tên người dùng, mậ
  */
 
 public class UserDetailsImpl implements UserDetails {
+  @Serial
   private static final long serialVersionUID = 1L;
   private Long id;
   private String username;

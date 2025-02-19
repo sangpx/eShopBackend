@@ -7,6 +7,7 @@ import com.base.springsecurity.configuration.vnpay.Config;
 import com.base.springsecurity.model.dto.catalog.payment.PaymentResDTO;
 import com.base.springsecurity.model.dto.payload.response.MessageResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,10 +22,10 @@ import java.util.*;
 //@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/payments")
+@RequiredArgsConstructor
 public class VNPaymentController {
 
-    @Autowired
-    private OrderService orderService;
+    private final OrderService orderService;
 
     @GetMapping("/create_payment")
     public ResponseEntity<?> createPayment(HttpServletRequest req, @RequestParam Long orderId)
@@ -49,7 +50,7 @@ public class VNPaymentController {
         vnp_Params.put("vnp_CurrCode", "VND");
         vnp_Params.put("vnp_BankCode", "NCB");
         vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
-        vnp_Params.put("vnp_OrderInfo", "Thanh toan don hang:" + vnp_TxnRef);
+        vnp_Params.put("vnp_OrderInfo", "Order payment: " + vnp_TxnRef);
         vnp_Params.put("vnp_Locale", "vn");
         vnp_Params.put("vnp_OrderType", orderType);
         vnp_Params.put("vnp_ReturnUrl", Config.vnp_ReturnUrl);

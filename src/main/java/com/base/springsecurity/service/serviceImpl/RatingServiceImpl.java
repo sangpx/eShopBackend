@@ -8,6 +8,7 @@ import com.base.springsecurity.model.entity.User;
 import com.base.springsecurity.repository.RatingRepository;
 import com.base.springsecurity.service.ProductService;
 import com.base.springsecurity.service.RatingService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,13 +16,11 @@ import java.util.Date;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class RatingServiceImpl implements RatingService {
 
-    @Autowired
-    private RatingRepository ratingRepository;
-
-    @Autowired
-    private ProductService productService;
+    private final RatingRepository ratingRepository;
+    private final ProductService productService;
 
     @Override
     public Rating createRating(RatingDTO ratingDTO, User user) throws ProductException {

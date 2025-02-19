@@ -14,11 +14,7 @@ import java.util.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "orders")
-public class Order extends BaseEntity{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class Order extends AbstractBaseEntity<Long> {
     @Column(name="order_date")
     private Date orderDate;
 

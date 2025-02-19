@@ -5,6 +5,7 @@ import com.base.springsecurity.model.dto.catalog.address.AddressDTO;
 import com.base.springsecurity.model.entity.Address;
 import com.base.springsecurity.repository.AddressRepository;
 import com.base.springsecurity.service.AddressService;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,12 +14,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class AddressServiceImpl implements AddressService {
 
-    @Autowired
-    private AddressRepository addressRepository;
-    @Autowired
-    private ModelMapper modelMapper;
+    private final AddressRepository addressRepository;
+    private final ModelMapper modelMapper;
 
     @Override
     public List<AddressDTO> getAllAddresses() {

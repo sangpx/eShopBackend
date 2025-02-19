@@ -1,6 +1,8 @@
 package com.base.springsecurity.service.serviceImpl;
 
+import com.base.springsecurity.exception.CartItemException;
 import com.base.springsecurity.exception.ProductException;
+import com.base.springsecurity.exception.UserException;
 import com.base.springsecurity.model.dto.catalog.cart.CartDTO;
 import com.base.springsecurity.model.entity.Cart;
 import com.base.springsecurity.model.entity.CartItem;
@@ -11,6 +13,7 @@ import com.base.springsecurity.repository.UserRepository;
 import com.base.springsecurity.service.CartItemService;
 import com.base.springsecurity.service.CartService;
 import com.base.springsecurity.service.ProductService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,19 +23,13 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class CartServiceImpl implements CartService {
 
-    @Autowired
-    private CartRepository cartRepository;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private CartItemService cartItemService;
-
-    @Autowired
-    private ProductService productService;
+    private final CartRepository cartRepository;
+    private final UserRepository userRepository;
+    private final CartItemService cartItemService;
+    private final ProductService productService;
 
     @Override
     public Cart createCart(User user) {
@@ -42,7 +39,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public String addCartItem(Long userId, CartDTO cartDTO) throws  ProductException {
+    public String addCartItem(Long userId, CartDTO cartDTO) throws ProductException, CartItemException, UserException {
         // Lấy thông tin người dùng hiện tại từ đối tượng Authentication
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
@@ -51,7 +48,7 @@ public class CartServiceImpl implements CartService {
 
         // Kiểm tra xem userId có trùng với người dùng hiện tại không
         if (!currentUser.getId().equals(userId)) {
-            throw new RuntimeException("You are not authorized to add items to another user's cart");
+            throw new UserException("You are not authorized to add items to another user's cart");
         }
 
         Cart cart = cartRepository.findByUserId(userId);
@@ -97,8 +94,8 @@ public class CartServiceImpl implements CartService {
         }
 
         Cart cart = cartRepository.findByUserId(userId);
-        long totalPrice = 0;
-        long totalDiscountedPrice = 0;
+        long totalPrice = 0L;
+        long totalDiscountedPrice = 0L;
         int totalItem = 0;
         for (CartItem cartItem : cart.getCartItems()) {
             totalPrice += cartItem.getPrice();
@@ -108,7 +105,7 @@ public class CartServiceImpl implements CartService {
         cart.setTotalPrice(totalPrice);
         cart.setTotalItem(cart.getCartItems().size());
         cart.setTotalDiscountedPrice(totalDiscountedPrice);
-        cart.setDiscounte(totalPrice-totalDiscountedPrice);
+        cart.setDiscounte(totalPrice - totalDiscountedPrice);
         cart.setTotalItem(totalItem);
         cart.setUser(currentUser);
         return cartRepository.save(cart);

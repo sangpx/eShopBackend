@@ -8,6 +8,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +21,14 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 
 /*
-OncePerRequestFilterthực hiện một lần thực thi duy nhất cho mỗi yêu cầu đối với API.
+OncePerRequestFilter thực hiện một lần thực thi duy nhất cho mỗi yêu cầu đối với API.
  Nó cung cấp một phương thức doFilterInternal() mà chúng ta sẽ triển khai
  phân tích cú pháp và xác thực JWT,
  tải thông tin chi tiết về Người dùng (bằng cách sử dụng UserDetailsService),
  kiểm tra Ủy quyền (bằng cách sử dụng UsernamePasswordAuthenticationToken).
  */
-
 public class AuthTokenFilter extends OncePerRequestFilter {
+
   @Autowired
   private JwtUtils jwtUtils;
 

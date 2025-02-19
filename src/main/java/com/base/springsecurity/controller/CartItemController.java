@@ -6,6 +6,7 @@ import com.base.springsecurity.model.dto.payload.response.MessageResponse;
 import com.base.springsecurity.model.entity.CartItem;
 import com.base.springsecurity.service.CartItemService;
 import com.base.springsecurity.service.CartService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,12 +15,11 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/cartitems")
+@RequiredArgsConstructor
 public class CartItemController {
-    @Autowired
-    private CartService cartService;
 
-    @Autowired
-    private CartItemService cartItemService;
+    private final CartService cartService;
+    private final CartItemService cartItemService;
 
     //Delete Item to Cart
     @DeleteMapping("/deleteItemToCart")

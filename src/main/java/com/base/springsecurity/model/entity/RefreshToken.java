@@ -14,10 +14,8 @@ import java.time.Instant;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "refresh_token")
-public class RefreshToken extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+public class RefreshToken extends AbstractBaseEntity<Long> {
+
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")

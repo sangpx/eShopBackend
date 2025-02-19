@@ -7,6 +7,7 @@ import com.base.springsecurity.repository.CategoryRepository;
 import com.base.springsecurity.service.CategoryService;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -18,18 +19,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
 
-    @Autowired
-    RedisTemplate redisTemplate;
-
+    private final RedisTemplate redisTemplate;
+    private final CategoryRepository categoryRepository;
+    private final ModelMapper modelMapper;
     private Gson gson = new Gson();
-
-    @Autowired
-    private CategoryRepository categoryRepository;
-
-    @Autowired
-    private ModelMapper modelMapper;
 
     @Override
     public List<CategoryDTO> getAllCategories() {

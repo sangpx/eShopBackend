@@ -3,6 +3,7 @@ package com.base.springsecurity.controller;
 import com.base.springsecurity.model.dto.payload.response.MessageResponse;
 import com.base.springsecurity.model.entity.FileInfo;
 import com.base.springsecurity.service.FilesStorageService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -19,9 +20,10 @@ import java.util.stream.Collectors;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/files")
+@RequiredArgsConstructor
 public class FilesController {
-    @Autowired
-    private FilesStorageService storageService;
+
+    private final FilesStorageService storageService;
 
     //Upload File
     @PostMapping("/upload")

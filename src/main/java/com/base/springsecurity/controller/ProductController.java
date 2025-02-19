@@ -5,6 +5,7 @@ import com.base.springsecurity.exception.ProductException;
 import com.base.springsecurity.model.dto.payload.response.PageResult;
 import com.base.springsecurity.model.entity.Product;
 import com.base.springsecurity.service.ProductService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -16,10 +17,10 @@ import org.springframework.web.multipart.MultipartFile;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/products")
+@RequiredArgsConstructor
 public class ProductController {
 
-    @Autowired
-    private ProductService productService;
+    private final ProductService productService;
 
     @GetMapping("/getProductPaging")
     public PageResult<Page<Product>> getProductPaging(

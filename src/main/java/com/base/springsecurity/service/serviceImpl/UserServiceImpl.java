@@ -4,6 +4,7 @@ import com.base.springsecurity.exception.UserException;
 import com.base.springsecurity.model.entity.User;
 import com.base.springsecurity.repository.UserRepository;
 import com.base.springsecurity.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -14,9 +15,9 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service //Đánh dấu một Class là tầng Service, phục vụ các logic nghiệp vụ.
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Override
     public boolean existsByUsername(String userName) {

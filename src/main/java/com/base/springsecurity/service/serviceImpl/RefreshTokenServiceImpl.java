@@ -7,6 +7,7 @@ import com.base.springsecurity.repository.RefreshTokenRepository;
 import com.base.springsecurity.repository.UserRepository;
 import com.base.springsecurity.service.RefreshTokenService;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -16,16 +17,13 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class RefreshTokenServiceImpl implements RefreshTokenService {
 
     @Value("${ecommerce.app.jwtRefreshExpirationMs}")
     private Long refreshTokenDurationMs;
-
-    @Autowired
-    private RefreshTokenRepository refreshTokenRepository;
-
-    @Autowired
-    private UserRepository userRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
+    private final UserRepository userRepository;
 
     @Override
     public Optional<RefreshToken> findByToken(String token) {
